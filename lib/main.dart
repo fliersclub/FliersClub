@@ -1,3 +1,5 @@
+import 'package:fliersclub/screens/admin_dashboard_screen.dart';
+import 'package:fliersclub/screens/clubuser_homescreen.dart';
 import 'package:fliersclub/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LandingScreen(),
+      home: ClubUserHomeScreen(),
     );
   }
 }
