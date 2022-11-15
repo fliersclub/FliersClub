@@ -1,3 +1,4 @@
+import 'package:fliersclub/screens/admin_dashboard_screen.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(
             height: 50,
           ),
-          WelcomeButton(text: 'Login', onPressed: () {}, color: Colors.black)
+          WelcomeButton(
+              text: 'Login',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return AdminDashboard();
+                }));
+              },
+              color: Colors.black)
         ],
       ),
     );

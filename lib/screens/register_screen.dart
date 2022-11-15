@@ -1,3 +1,5 @@
+import 'package:fliersclub/screens/clubuser_homescreen.dart';
+import 'package:fliersclub/screens/tournment_screen.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,14 @@ class RegisterScreen extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          WelcomeButton(text: 'Login', onPressed: () {}, color: Colors.black)
+          WelcomeButton(
+              text: 'Register',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ClubUserHomeScreen();
+                }));
+              },
+              color: Colors.black)
         ],
       ),
     );

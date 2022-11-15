@@ -28,7 +28,8 @@ class _ClubUserHomeScreenState extends State<ClubUserHomeScreen> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Do you want to add tournament ?'),
+                      content: Text('Do you want to add tournament ?'),
+                      title: Text('Alert!'),
                       actions: [
                         TextButton(
                           onPressed: () {},

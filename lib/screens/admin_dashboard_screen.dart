@@ -63,7 +63,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               child: Container(
                 width: double.infinity,
                 color: Colors.white12,
-                height: 500,
+                height: 400,
                 child: GridView.count(
                   crossAxisCount: 2,
                   children: [
