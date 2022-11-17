@@ -1,10 +1,18 @@
+import 'package:fliersclub/screens/fixture_screen.dart';
 import 'package:fliersclub/screens/tournamentdetail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class TournamentScreen extends StatelessWidget {
-  const TournamentScreen({super.key});
+class TournamentScreen extends StatefulWidget {
+  @override
+  State<TournamentScreen> createState() => _TournamentScreenState();
+}
+
+class _TournamentScreenState extends State<TournamentScreen> {
+  bool clubmatch1ended = false;
+  bool clubmatch2ended = false;
+  bool clubmatch3ended = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +42,29 @@ class TournamentScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return TournamentDetailPage();
-                          }));
-                        },
-                        child: Text('start match')),
+                    child: clubmatch1ended == true
+                        ? ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return FixtureScreen();
+                              }));
+                            },
+                            child: Text('View'))
+                        : ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.green),
+                            onPressed: () async {
+                              bool isMatchend = await Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return TournamentDetailPage();
+                              }));
+                              print(isMatchend);
+                              setState(() {
+                                clubmatch1ended = isMatchend;
+                              });
+                            },
+                            child: Text('start match')),
                   )
                 ],
               ),
@@ -66,15 +88,29 @@ class TournamentScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return TournamentDetailPage();
-                          }));
-                        },
-                        child: Text('start match')),
+                    child: clubmatch2ended == true
+                        ? ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return FixtureScreen();
+                              }));
+                            },
+                            child: Text('View'))
+                        : ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.green),
+                            onPressed: () async {
+                              bool isMatchend = await Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return TournamentDetailPage();
+                              }));
+                              print(isMatchend);
+                              setState(() {
+                                clubmatch2ended = isMatchend;
+                              });
+                            },
+                            child: Text('start match')),
                   )
                 ],
               ),
@@ -98,15 +134,29 @@ class TournamentScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return TournamentDetailPage();
-                          }));
-                        },
-                        child: Text('start match')),
+                    child: clubmatch3ended == true
+                        ? ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return FixtureScreen();
+                              }));
+                            },
+                            child: Text('View'))
+                        : ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.green),
+                            onPressed: () async {
+                              bool isMatchend = await Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return TournamentDetailPage();
+                              }));
+                              print(isMatchend);
+                              setState(() {
+                                clubmatch3ended = isMatchend;
+                              });
+                            },
+                            child: Text('start match')),
                   )
                 ],
               ),
