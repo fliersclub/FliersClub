@@ -1,3 +1,4 @@
+import 'package:fliersclub/screens/tournamentdetail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -20,32 +21,98 @@ class TournamentScreen extends StatelessWidget {
           height: 100,
           width: double.infinity,
           child: Card(
-              child: Center(
-                  child: Text(
-            'Clubname vs clubname',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ))),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Clubname vs clubname',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return TournamentDetailPage();
+                          }));
+                        },
+                        child: Text('start match')),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
         Container(
           height: 100,
           width: double.infinity,
           child: Card(
-              child: Center(
-                  child: Text(
-            'Clubname vs clubname',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ))),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Clubname vs clubname',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return TournamentDetailPage();
+                          }));
+                        },
+                        child: Text('start match')),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
         Container(
           height: 100,
           width: double.infinity,
           child: Card(
-              child: Center(
-                  child: Text(
-            'Clubname vs clubname',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ))),
-        )
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Clubname vs clubname',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return TournamentDetailPage();
+                          }));
+                        },
+                        child: Text('start match')),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
       ]),
     );
   }

@@ -48,7 +48,7 @@ class _ClubUserHomeScreenState extends State<ClubUserHomeScreen> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Fliers Club'),
+        title: const Text('Fliers Club'),
       ),
       bottomNavigationBar: BottomNavigationBar(
           onTap: (value) {
@@ -56,7 +56,7 @@ class _ClubUserHomeScreenState extends State<ClubUserHomeScreen> {
               selectedIndex = value;
             });
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
               label: '',
               icon: Icon(
