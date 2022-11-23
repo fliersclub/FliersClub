@@ -1,4 +1,5 @@
-import 'package:fliersclub/screens/tournment_screen.dart';
+import 'package:fliersclub/screens/tournament_screen1.dart';
+import 'package:fliersclub/screens/tournment_screen2.dart';
 import 'package:fliersclub/screens/userprofile_screen.dart';
 import 'package:fliersclub/screens/usersettings_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class ClubUserHomeScreen extends StatefulWidget {
 }
 
 class _ClubUserHomeScreenState extends State<ClubUserHomeScreen> {
-  List pages = [TournamentScreen(), UserProfileScreen(), SettingScreen()];
+  List pages = [TournamentScreen1(), UserProfileScreen(), SettingScreen()];
   int selectedIndex = 0;
 
   @override

@@ -1,15 +1,16 @@
+import 'package:fliersclub/screens/addmatch_screen.dart';
 import 'package:fliersclub/screens/fixture_screen.dart';
 import 'package:fliersclub/screens/tournamentdetail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class TournamentScreen extends StatefulWidget {
+class TournamentScreen2 extends StatefulWidget {
   @override
-  State<TournamentScreen> createState() => _TournamentScreenState();
+  State<TournamentScreen2> createState() => _TournamentScreenState();
 }
 
-class _TournamentScreenState extends State<TournamentScreen> {
+class _TournamentScreenState extends State<TournamentScreen2> {
   bool clubmatch1ended = false;
   bool clubmatch2ended = false;
   bool clubmatch3ended = false;
@@ -17,11 +18,23 @@ class _TournamentScreenState extends State<TournamentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.black,
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return AddMatchScreen();
+            }));
+          },
+          child: Icon(Icons.add)),
+      appBar: AppBar(
+        title: Text('Tournament name'),
+        backgroundColor: Colors.black,
+      ),
       body: Column(children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Text(
-            'Tournaments',
+            'Tournament Name',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
@@ -33,6 +46,7 @@ class _TournamentScreenState extends State<TournamentScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text('Match 1'),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
@@ -47,7 +61,7 @@ class _TournamentScreenState extends State<TournamentScreen> {
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return FixtureScreen();
+                                return ScoreScreen();
                               }));
                             },
                             child: Text('View'))
@@ -79,6 +93,7 @@ class _TournamentScreenState extends State<TournamentScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text('Match 2'),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
@@ -93,7 +108,7 @@ class _TournamentScreenState extends State<TournamentScreen> {
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return FixtureScreen();
+                                return ScoreScreen();
                               }));
                             },
                             child: Text('View'))
@@ -125,6 +140,7 @@ class _TournamentScreenState extends State<TournamentScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text('Match 3'),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
@@ -139,7 +155,7 @@ class _TournamentScreenState extends State<TournamentScreen> {
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return FixtureScreen();
+                                return ScoreScreen();
                               }));
                             },
                             child: Text('View'))

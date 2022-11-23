@@ -3,14 +3,22 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class TextFormField1 extends StatelessWidget {
-  TextFormField1({required this.hintText});
-  String hintText;
-
+  TextFormField1(
+      {this.hintText, this.ontap, this.controller, this.readonly, this.label});
+  String? hintText;
+  Function()? ontap;
+  TextEditingController? controller;
+  bool? readonly;
+  String? label;
   @override
   Widget build(BuildContext context) {
     return Container(
         child: TextFormField(
+      readOnly: readonly == null ? false : true,
+      controller: controller,
+      onTap: ontap,
       decoration: InputDecoration(
+        labelText: label,
         hintText: hintText,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

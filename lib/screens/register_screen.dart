@@ -1,5 +1,5 @@
 import 'package:fliersclub/screens/clubuser_homescreen.dart';
-import 'package:fliersclub/screens/tournment_screen.dart';
+import 'package:fliersclub/screens/tournment_screen2.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
 import 'package:flutter/material.dart';
