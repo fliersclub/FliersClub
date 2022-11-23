@@ -16,7 +16,6 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
     return Scaffold(
       body: ListView(children: [
         Container(
-          height: 80,
           child: Card(
               child: Column(
             children: [
@@ -37,7 +36,6 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
           )),
         ),
         Container(
-          height: 80,
           child: Card(
               child: Column(
             children: [
@@ -47,13 +45,17 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.green),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return TournamentScreen2();
+                    }));
+                  },
                   child: Text('View Tournament'))
             ],
           )),
         ),
         Container(
-          height: 80,
           child: Card(
               child: Column(
             children: [
@@ -63,13 +65,17 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.green),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return TournamentScreen2();
+                    }));
+                  },
                   child: Text('View Tournament'))
             ],
           )),
         ),
         Container(
-          height: 80,
           child: Card(
               child: Column(
             children: [
@@ -79,7 +85,12 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.green),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return TournamentScreen2();
+                    }));
+                  },
                   child: Text('View Tournament'))
             ],
           )),

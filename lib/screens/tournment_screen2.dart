@@ -39,7 +39,6 @@ class _TournamentScreenState extends State<TournamentScreen2> {
           ),
         ),
         Container(
-          height: 100,
           width: double.infinity,
           child: Card(
             child: Center(
@@ -86,7 +85,6 @@ class _TournamentScreenState extends State<TournamentScreen2> {
           ),
         ),
         Container(
-          height: 100,
           width: double.infinity,
           child: Card(
             child: Center(
@@ -133,7 +131,6 @@ class _TournamentScreenState extends State<TournamentScreen2> {
           ),
         ),
         Container(
-          height: 100,
           width: double.infinity,
           child: Card(
             child: Center(
