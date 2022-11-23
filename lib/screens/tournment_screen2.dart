@@ -137,9 +137,9 @@ class _TournamentScreenState extends State<TournamentScreen2> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Match 3'),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                  const Text('Match 3'),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10),
                     child: Text(
                       'Clubname vs clubname',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -155,21 +155,22 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                 return ScoreScreen();
                               }));
                             },
-                            child: Text('View'))
+                            child: const Text('View'),
+                          )
                         : ElevatedButton(
                             style:
                                 ElevatedButton.styleFrom(primary: Colors.green),
                             onPressed: () async {
                               bool isMatchend = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return TournamentDetailPage();
+                                return const TournamentDetailPage();
                               }));
                               print(isMatchend);
                               setState(() {
                                 clubmatch3ended = isMatchend;
                               });
                             },
-                            child: Text('start match')),
+                            child: const Text('start match')),
                   )
                 ],
               ),

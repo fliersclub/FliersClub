@@ -13,6 +13,7 @@ class AddMatchScreen extends StatefulWidget {
 
 class _AddMatchScreenState extends State<AddMatchScreen> {
   String _date = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  String? selectedDate;
   late TimeOfDay time;
   String timeo = '';
   String? _selectedUmpire;
@@ -51,15 +52,17 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
               height: 10,
             ),
             TextFormField1(
-                label: 'Match Name', controller: _matchNameController),
+                hintText: _matchNameController.text.isEmpty
+                    ? 'MatchName'
+                    : _matchNameController.text,
+                controller: _matchNameController),
             const SizedBox(
               height: 5,
             ),
             TextFormField1(
-                label: 'Match Date',
                 readonly: true,
                 controller: _matchDateController,
-                hintText: _date.toString(),
+                hintText: selectedDate == null ? 'Match Date' : selectedDate,
                 ontap: () {
                   selectDate(context);
                 }),
@@ -67,10 +70,9 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
               height: 5,
             ),
             TextFormField1(
-                label: 'Match Time',
                 readonly: true,
                 controller: _matchTimeController,
-                hintText: timeo.toString(),
+                hintText: timeo.isEmpty ? 'Match Time' : timeo.toString(),
                 ontap: () {
                   selectTime(context);
                 }),
@@ -78,7 +80,10 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
               height: 5,
             ),
             TextFormField1(
-                label: 'Match Place', controller: _matchPlaceController),
+                hintText: _matchPlaceController.text.isEmpty
+                    ? 'Match Place'
+                    : _matchPlaceController.text,
+                controller: _matchPlaceController),
             const SizedBox(
               height: 5,
             ),
@@ -145,7 +150,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
 
     if (_datePicker != null && _datePicker != null) {
       setState(() {
-        _date = DateFormat('dd-MM-yyyy').format(_datePicker);
+        selectedDate = DateFormat('dd-MM-yyyy').format(_datePicker);
         ;
       });
       print(_date.toString());
@@ -154,7 +159,8 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
 
   void selectTime(BuildContext context) async {
     String AM_PM = '';
-    picked = (await showTimePicker(context: context, initialTime: time))!;
+    picked =
+        (await showTimePicker(context: context, initialTime: TimeOfDay.now()))!;
 
     if (picked != null) {
       setState(() {
