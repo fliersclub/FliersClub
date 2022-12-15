@@ -1,5 +1,6 @@
 import 'package:fliersclub/screens/addmatch_screen.dart';
 import 'package:fliersclub/screens/fixture_screen.dart';
+import 'package:fliersclub/screens/timer_screen.dart';
 import 'package:fliersclub/screens/tournamentdetail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -49,7 +50,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
-                      'Clubname vs clubname',
+                      'Participant 1',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -70,14 +71,14 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                             onPressed: () async {
                               bool isMatchend = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return TournamentDetailPage();
+                                return TimerScreen();
                               }));
                               print(isMatchend);
                               setState(() {
                                 clubmatch1ended = isMatchend;
                               });
                             },
-                            child: Text('start match')),
+                            child: Text('Enter Match')),
                   )
                 ],
               ),
@@ -95,7 +96,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
-                      'Clubname vs clubname',
+                      'Participant 2',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -116,14 +117,14 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                             onPressed: () async {
                               bool isMatchend = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return TournamentDetailPage();
+                                return TimerScreen();
                               }));
                               print(isMatchend);
                               setState(() {
                                 clubmatch2ended = isMatchend;
                               });
                             },
-                            child: Text('start match')),
+                            child: Text('Enter Match')),
                   )
                 ],
               ),
@@ -141,7 +142,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                   const Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
-                      'Clubname vs clubname',
+                      'Participant 3',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -163,14 +164,14 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                             onPressed: () async {
                               bool isMatchend = await Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return const TournamentDetailPage();
+                                return const TimerScreen();
                               }));
                               print(isMatchend);
                               setState(() {
                                 clubmatch3ended = isMatchend;
                               });
                             },
-                            child: const Text('start match')),
+                            child: const Text('Enter Match')),
                   )
                 ],
               ),

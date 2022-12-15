@@ -1,4 +1,5 @@
 import 'package:fliersclub/screens/timer_screen.dart';
+import 'package:fliersclub/screens/tournamentdetail_screen.dart';
 import 'package:fliersclub/screens/tournment_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -135,7 +136,7 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return TimerScreen();
+                  return TournamentScreen2();
                 }));
               },
               child: Text('View Tournament')),
