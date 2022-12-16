@@ -13,12 +13,9 @@ class DashboardCard extends StatelessWidget {
       color: Colors.cyan[50],
       shadowColor: Colors.black,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Text(
           count,

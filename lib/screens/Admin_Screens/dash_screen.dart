@@ -26,19 +26,18 @@ class _DashScreenState extends State<DashScreen> {
               child: GridView.count(
                 crossAxisCount: 2,
                 children: [
-                  DashboardCard(title: 'No.of.clubs registered', count: '10'),
-                  DashboardCard(
-                      title: 'No.of.Tournaments registered', count: '5'),
-                  DashboardCard(title: 'No.of users registered', count: '8'),
-                  DashboardCard(title: 'No.of.clubs registered', count: '13'),
+                  DashboardCard(title: 'No.of.clubs ', count: '10'),
+                  DashboardCard(title: 'No.of.Tournaments ', count: '5'),
+                  DashboardCard(title: 'No.of users ', count: '8'),
+                  DashboardCard(title: 'No.of.referees', count: '13'),
                 ],
               ),
             ),
           )
         ]),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          child: Text(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: const Text(
             'Upcoming Tournaments',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
           ),

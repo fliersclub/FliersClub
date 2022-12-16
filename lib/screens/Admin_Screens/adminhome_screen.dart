@@ -17,26 +17,35 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return const DefaultTabController(
       length: 3,
       child: Scaffold(
-          appBar: TabBar(labelColor: Colors.black, tabs: [
-            Tab(
-              icon: Icon(Icons.dashboard_rounded),
-              text: 'Dashboard',
-            ),
-            Tab(
-              text: 'Approved',
-              icon: Icon(
-                Icons.check,
-                color: Colors.green,
-              ),
-            ),
-            Tab(
-              icon: Icon(Icons.pending_actions_outlined),
-              text: 'Pending',
-            )
-          ]),
+          appBar: TabBar(
+              indicatorColor: Colors.blueGrey,
+              labelColor: Colors.black,
+              tabs: [
+                Tab(
+                  icon: Icon(
+                    Icons.dashboard_rounded,
+                    color: Colors.teal,
+                  ),
+                  text: 'Dashboard',
+                ),
+                Tab(
+                  text: 'Approved',
+                  icon: Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.pending_actions_outlined,
+                    color: Colors.red,
+                  ),
+                  text: 'Pending',
+                )
+              ]),
           body: TabBarView(
             children: [DashScreen(), ApprovedScreen(), PendingScreen()],
           )),
