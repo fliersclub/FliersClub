@@ -1,4 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:fliersclub/screens/landing_screen.dart';
 import 'package:fliersclub/widgets/dashboard_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -12,6 +15,7 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +56,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
         ],
       )),
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                _auth.signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => LandingScreen()),
+                    (Route<dynamic> route) => false);
+              },
+              icon: Icon(Icons.exit_to_app))
+        ],
         title: Text('Dashboard'),
         backgroundColor: Colors.black,
       ),

@@ -16,6 +16,12 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: const Text('ClubAdmin'),
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.exit_to_app))
+          ]),
       body: Column(
         children: [
           Expanded(

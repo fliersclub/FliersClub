@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1037504675473",
+    "project_id": "fliersclub-c3dbb",
+    "storage_bucket": "fliersclub-c3dbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037504675473:android:c5acbf99a47871fe72c930",
+        "android_client_info": {
+          "package_name": "com.example.fliersclub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037504675473-r9lnt1fov0ie0mjarbj8oqscsmpvdkq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsdhGHVC-crw5J1n-bAESLW4PXv6o2yPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037504675473-r9lnt1fov0ie0mjarbj8oqscsmpvdkq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -46,7 +46,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Match 1'),
+                  const Text('Match 1'),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(

@@ -65,7 +65,7 @@ class _LandingScreenState extends State<LandingScreen>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: WelcomeButton(
-              text: 'Register',
+              text: 'Club Register',
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return RegisterScreen();
