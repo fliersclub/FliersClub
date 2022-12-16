@@ -108,8 +108,8 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepPurple),
                   onPressed: () {},
-                  icon: Icon(Icons.add),
-                  label: Text('Tournament'),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Tournament'),
                 ),
               )
             ]),

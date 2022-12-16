@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fliersclub/screens/admin_dashboard_screen.dart';
+import 'package:fliersclub/screens/Admin_Screens/admin_dashboard_screen.dart';
 import 'package:fliersclub/screens/tournament_screen1.dart';
 import 'package:fliersclub/services/auth_methods.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
