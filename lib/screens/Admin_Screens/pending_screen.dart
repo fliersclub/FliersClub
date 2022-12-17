@@ -68,7 +68,7 @@ class _PendingScreenState extends State<PendingScreen> {
                                             content: Text(res)));
                                   }
                                 },
-                                child: Text('Approve'))
+                                child: const Text('Approve'))
                           ],
                         )),
                       ),

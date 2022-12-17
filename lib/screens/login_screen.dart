@@ -18,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool isLoading = false;
   FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -86,36 +87,49 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(
             height: 50,
           ),
-          WelcomeButton(
-              text: 'Login',
-              onPressed: () async {
-                print(_selectedRole);
-                String res = await AuthMethod().login(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    role: _selectedRole);
-                if (res == 'SuperAdmin') {
-                  //Navigating to admin panel
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return AdminDashboard();
-                  }));
-                } else if (res == 'ClubAdmin') {
-                  //Navigating to clubadmin panel
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return TournamentScreen1();
-                  }));
-                } else if (res == 'Referees') {
-                  //Navigating to referees panel
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(res),
-                    backgroundColor: Colors.red,
-                  ));
-                }
-              },
-              color: Colors.black)
+          isLoading == true
+              ? Center(child: CircularProgressIndicator())
+              : WelcomeButton(
+                  text: 'Login',
+                  onPressed: () async {
+                    print(_selectedRole);
+                    setState(() {
+                      isLoading = true;
+                    });
+                    String res = await AuthMethod().login(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        role: _selectedRole);
+                    if (res == 'SuperAdmin') {
+                      //Navigating to admin panel
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return AdminDashboard();
+                        }),
+                      );
+                    } else if (res == 'ClubAdmin') {
+                      //Navigating to clubadmin panel
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return TournamentScreen1();
+                      }));
+                    } else if (res == 'Referees') {
+                      //Navigating to referees panel
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(res),
+                        backgroundColor: Colors.red,
+                      ));
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                    setState(() {
+                      isLoading = false;
+                    });
+                  },
+                  color: Colors.black)
         ],
       ),
     );

@@ -69,7 +69,7 @@ class _ApprovedScreenState extends State<ApprovedScreen> {
                   );
                 }));
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
