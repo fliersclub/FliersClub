@@ -4,6 +4,7 @@ import 'package:fliersclub/screens/ClubScreens/addmatch_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/fixture_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/timer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TournamentScreen2 extends StatefulWidget {
   var tournament;
@@ -15,16 +16,19 @@ class TournamentScreen2 extends StatefulWidget {
 class _TournamentScreenState extends State<TournamentScreen2> {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
+  late String date1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print(widget.tournament['tournamentName']);
+    setState(() {
+      DateTime date = DateTime.now();
+      date1 = DateFormat('dd-MM-yyyy').format(date);
+    });
   }
 
   bool clubmatch1ended = false;
-  bool clubmatch2ended = false;
-  bool clubmatch3ended = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,13 @@ class _TournamentScreenState extends State<TournamentScreen2> {
             },
             child: const Icon(Icons.add)),
         appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  print('add pressed');
+                },
+                icon: const Icon(Icons.add))
+          ],
           title: Text(widget.tournament['tournamentName']),
           backgroundColor: Colors.black,
         ),
@@ -121,34 +132,25 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                     ),
                                   ]),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: clubmatch1ended == true
-                                  ? ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return ScoreScreen();
-                                        }));
-                                      },
-                                      child: Text('View'))
-                                  : ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.green),
-                                      onPressed: () async {
-                                        bool isMatchend = await Navigator.push(
-                                            context, MaterialPageRoute(
-                                                builder: (context) {
-                                          return TimerScreen();
-                                        }));
-                                        print(isMatchend);
-                                        setState(() {
-                                          clubmatch1ended = isMatchend;
-                                        });
-                                      },
-                                      child: Text('Enter Match')),
-                            )
+                            snapshot.data!.docs[index]['matchdate'] == date1
+                                ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.green),
+                                        onPressed: () async {},
+                                        child: Text('Enter Match')),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.green),
+                                        onPressed: () async {},
+                                        child: Text('Scheduled on ' +
+                                            snapshot.data!.docs[index]
+                                                ['matchdate'])),
+                                  )
                           ],
                         ),
                       ),
@@ -161,3 +163,41 @@ class _TournamentScreenState extends State<TournamentScreen2> {
         ));
   }
 }
+
+
+
+
+
+
+
+
+
+
+//  Padding(
+//                               padding: const EdgeInsets.only(bottom: 10),
+//                               child: clubmatch1ended == true
+//                                   ? ElevatedButton(
+//                                       onPressed: () {
+//                                         Navigator.push(context,
+//                                             MaterialPageRoute(
+//                                                 builder: (context) {
+//                                           return ScoreScreen();
+//                                         }));
+//                                       },
+//                                       child: Text('View'))
+//                                   : ElevatedButton(
+//                                       style: ElevatedButton.styleFrom(
+//                                           primary: Colors.green),
+//                                       onPressed: () async {
+//                                         bool isMatchend = await Navigator.push(
+//                                             context, MaterialPageRoute(
+//                                                 builder: (context) {
+//                                           return TimerScreen();
+//                                         }));
+//                                         print(isMatchend);
+//                                         setState(() {
+//                                           clubmatch1ended = isMatchend;
+//                                         });
+//                                       },
+//                                       child: Text('Enter Match')),
+//                             )
