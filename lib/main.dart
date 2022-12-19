@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fliersclub/screens/Admin_Screens/admin_dashboard_screen.dart';
+import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
 import 'package:fliersclub/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +38,19 @@ class MyApp extends StatelessWidget {
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
+                if (firestore
+                        .collection('ClubAdmin')
+                        .where('id', isEqualTo: snapshot.data!.uid)
+                        .snapshots() !=
+                    null) {
+                  return TournamentScreen1();
+                } else if (firestore
+                        .collection('SubAdmin')
+                        .where('id', isEqualTo: snapshot.data!.uid)
+                        .snapshots() !=
+                    null) {
+                  return AdminDashboard();
+                }
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),

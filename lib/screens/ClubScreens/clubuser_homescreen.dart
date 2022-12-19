@@ -1,7 +1,6 @@
-import 'package:fliersclub/screens/tournament_screen1.dart';
-import 'package:fliersclub/screens/tournment_screen2.dart';
-import 'package:fliersclub/screens/userprofile_screen.dart';
-import 'package:fliersclub/screens/usersettings_screen.dart';
+import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
+import 'package:fliersclub/screens/ClubScreens/userprofile_screen.dart';
+import 'package:fliersclub/screens/ClubScreens/usersettings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';

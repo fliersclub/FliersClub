@@ -1,17 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fliersclub/models/tournament.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class AddMatchScreen extends StatefulWidget {
-  const AddMatchScreen({super.key});
+  var tournament;
+  AddMatchScreen({required this.tournament});
 
   @override
   State<AddMatchScreen> createState() => _AddMatchScreenState();
 }
 
 class _AddMatchScreenState extends State<AddMatchScreen> {
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   String _date = DateFormat('dd-MM-yyyy').format(DateTime.now());
   String? selectedDate;
   late TimeOfDay time;
@@ -28,11 +35,13 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
   TextEditingController _matchDateController = TextEditingController();
   TextEditingController _matchTimeController = TextEditingController();
   TextEditingController _matchPlaceController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     time = TimeOfDay.now();
+    print(widget.tournament);
   }
 
   @override
@@ -40,7 +49,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Add a match'),
+        title: const Text('Add a match'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -53,9 +62,17 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
             ),
             TextFormField1(
                 hintText: _matchNameController.text.isEmpty
-                    ? 'MatchName'
+                    ? 'Participant Name'
                     : _matchNameController.text,
                 controller: _matchNameController),
+            const SizedBox(
+              height: 5,
+            ),
+            TextFormField1(
+                hintText: _mobileController.text.isEmpty
+                    ? 'Mobile Number'
+                    : _mobileController.text,
+                controller: _mobileController),
             const SizedBox(
               height: 5,
             ),
@@ -128,9 +145,28 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
               width: 200,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                icon: Icon(Icons.alarm),
-                label: Text('Schedule Match'),
-                onPressed: () {
+                icon: const Icon(Icons.alarm),
+                label: const Text('Schedule Match'),
+                onPressed: () async {
+                  String res = await addMatch(
+                      tournamentid: widget.tournament['id'],
+                      participantName: _matchNameController.text,
+                      number: _mobileController.text,
+                      date: selectedDate.toString(),
+                      place: _matchPlaceController.text,
+                      time: timeo.toString(),
+                      umpire: _selectedUmpire.toString());
+                  if (res == 'success') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text('Match scheduled successfully')));
+                    Navigator.pop(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(res.toString())));
+                  }
+
                   print(_selectedUmpire);
                 },
               ),
@@ -178,5 +214,39 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
         print(timeo);
       });
     }
+  }
+
+  Future<String> addMatch(
+      {required String participantName,
+      required String number,
+      required tournamentid,
+      required String date,
+      required String time,
+      required String place,
+      required String umpire}) async {
+    String res = 'Error while adding match';
+    String id = Uuid().v1();
+    try {
+      await _firestore
+          .collection('ClubAdmin')
+          .doc(_auth.currentUser!.uid)
+          .collection('tournaments')
+          .doc(widget.tournament['id'])
+          .collection('matches')
+          .doc(id)
+          .set({
+        'participantName': participantName,
+        'mobile': number,
+        'matchdate': date,
+        'matchtime': time,
+        'matchplace': place,
+        'matchumpire': umpire,
+        'tournamentid': tournamentid
+      });
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 }
