@@ -169,22 +169,23 @@ class _TimerScreenState extends State<TimerScreen> {
                                                 iscancelled2 = true;
                                               });
                                             },
-                                            child: Text('Cancel')),
+                                            child: const Text('Cancel')),
                                         const SizedBox(
                                           width: 5,
                                         ),
                                         ElevatedButton(
-                                            onPressed: () {
-                                              _stopWatchTimer2.onExecute
-                                                  .add(StopWatchExecute.stop);
-                                              setState(() {
-                                                pigeon2time = displayTime
-                                                    .substring(0, 16);
+                                          onPressed: () {
+                                            _stopWatchTimer2.onExecute
+                                                .add(StopWatchExecute.stop);
+                                            setState(() {
+                                              pigeon2time =
+                                                  displayTime.substring(0, 16);
 
-                                                isEnd2 = true;
-                                              });
-                                            },
-                                            child: Text('End'))
+                                              isEnd2 = true;
+                                            });
+                                          },
+                                          child: const Text('End'),
+                                        )
                                       ],
                                     )
                                   : const SizedBox(),
@@ -198,7 +199,7 @@ class _TimerScreenState extends State<TimerScreen> {
                               'Cancelled at ' + pigeon2time,
                               style: TextStyle(color: Colors.red),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       isEnd2 == true
                           ? Text(
                               'Match Ended ! Pigeon 2 time is ' + pigeon2time)
@@ -219,8 +220,9 @@ class _TimerScreenState extends State<TimerScreen> {
                     _stopWatchTimer1.onExecute.add(StopWatchExecute.start);
                     _stopWatchTimer2.onExecute.add(StopWatchExecute.start);
                   },
-                  child: const Text('START'))
-              : const SizedBox()
+                  child: const Text('START'),
+                )
+              : ElevatedButton(onPressed: () {}, child: const Text('End Match'))
         ]),
       ),
     );

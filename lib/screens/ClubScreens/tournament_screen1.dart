@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fliersclub/models/clubuser.dart';
+import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/add_tournament_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/tournment_screen2.dart';
-import 'package:fliersclub/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
 class TournamentScreen1 extends StatefulWidget {

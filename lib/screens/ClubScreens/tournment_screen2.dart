@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fliersclub/screens/ClubScreens/addmatch_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/fixture_screen.dart';
-import 'package:fliersclub/screens/ClubScreens/timer_screen.dart';
+import 'package:fliersclub/screens/RefereeScreens/timer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -67,9 +67,9 @@ class _TournamentScreenState extends State<TournamentScreen2> {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (snapshot.data == null) {
+            } else if (snapshot.data!.docs.isEmpty) {
               return Center(
-                child: Text('No matches for this tournament'),
+                child: Text('No matches added for this tournament'),
               );
             } else {
               return ListView.builder(
@@ -83,7 +83,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Match $index'),
+                            Text('Participant $index'),
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
@@ -139,17 +139,20 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                         style: ElevatedButton.styleFrom(
                                             primary: Colors.green),
                                         onPressed: () async {},
-                                        child: Text('Enter Match')),
+                                        child: Text('Match Today at ' +
+                                            snapshot.data!.docs[index]
+                                                ['matchtime'])),
                                   )
                                 : Padding(
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.green),
-                                        onPressed: () async {},
-                                        child: Text('Scheduled on ' +
-                                            snapshot.data!.docs[index]
-                                                ['matchdate'])),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.green),
+                                      onPressed: () async {},
+                                      child: Text('Scheduled on ' +
+                                          snapshot.data!.docs[index]
+                                              ['matchdate']),
+                                    ),
                                   )
                           ],
                         ),

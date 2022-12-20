@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fliersclub/screens/Admin_Screens/add_screen.dart';
 import 'package:fliersclub/screens/Admin_Screens/adminhome_screen.dart';
+import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/usersettings_screen.dart';
-import 'package:fliersclub/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboard extends StatefulWidget {
@@ -64,9 +64,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     MaterialPageRoute(builder: (context) => LandingScreen()),
                     (Route<dynamic> route) => false);
               },
-              icon: Icon(Icons.exit_to_app))
+              icon: const Icon(Icons.exit_to_app))
         ],
-        title: Text('Super Admin'),
+        title: const Text('Super Admin'),
         backgroundColor: Colors.black,
       ),
       body: _pages[_selectedIndex],

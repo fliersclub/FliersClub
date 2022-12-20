@@ -1,5 +1,6 @@
-import 'package:fliersclub/screens/login_screen.dart';
-import 'package:fliersclub/screens/register_screen.dart';
+import 'package:fliersclub/screens/AuthScreen/login_screen.dart';
+import 'package:fliersclub/screens/AuthScreen/register_screen.dart';
+import 'package:fliersclub/screens/RefereeScreens/refree_reg_screen.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -22,7 +23,7 @@ class _LandingScreenState extends State<LandingScreen>
     // TODO: implement initState
     super.initState();
     controller = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
     animation = CurvedAnimation(parent: controller!, curve: Curves.decelerate);
@@ -46,7 +47,7 @@ class _LandingScreenState extends State<LandingScreen>
               ),
             ),
           ),
-          Text(
+          const Text(
             'Fliers\'s club',
             style: TextStyle(fontSize: 29),
           )
@@ -57,21 +58,46 @@ class _LandingScreenState extends State<LandingScreen>
               text: 'Login',
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return LoginScreen();
+                  return const LoginScreen();
                 }));
               },
               color: Colors.black),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: WelcomeButton(
-              text: 'Club Register',
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return RegisterScreen();
-                }));
-              },
-              color: Colors.black),
+        SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: WelcomeButton(
+                    text: 'Club Register',
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const RegisterScreen();
+                      }));
+                    },
+                    color: Colors.black),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: WelcomeButton(
+                    text: 'Refree Register',
+                    onPressed: () {
+                      print('navigate to umpire reg page');
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) {
+                        return RefereeRegScreen();
+                      })));
+                    },
+                    color: Colors.black),
+              ),
+            ),
+          ],
         )
       ]),
     );
