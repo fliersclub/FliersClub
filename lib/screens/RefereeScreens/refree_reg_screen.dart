@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fliersclub/models/referee.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class RefereeRegScreen extends StatefulWidget {
   const RefereeRegScreen({super.key});
@@ -23,6 +25,9 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
   final List<String> _selectedClubs = [];
   final List<String> _selectedClubsName = [];
   final List<Map<String, dynamic>> clubs = [];
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +39,21 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           TextFormField1(
+            controller: _nameController,
             hintText: 'Name',
           ),
           const SizedBox(
             height: 5,
           ),
           TextFormField1(
+            controller: _mobileController,
             hintText: 'Mobile',
           ),
           const SizedBox(
             height: 5,
           ),
           TextFormField1(
+            controller: _addressController,
             hintText: 'address',
           ),
           const SizedBox(
@@ -138,10 +146,16 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-            onPressed: () {
+            onPressed: () async {
               print('reg');
               print(_selectedClubs);
               print(_selectedClubsName);
+              String res = await registerReferee(
+                  name: _nameController.text,
+                  address: _addressController.text,
+                  mobile: _mobileController.text,
+                  selectedClubs: _selectedClubs);
+              print(res);
             },
             child: const Text('Register'),
           )
@@ -169,5 +183,34 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
 
   void refresh() {
     setState(() {});
+  }
+
+  Future<String> registerReferee(
+      {required String name,
+      required String mobile,
+      required String address,
+      required List selectedClubs}) async {
+    _nameController.clear();
+    _addressController.clear();
+    _mobileController.clear();
+    String res = 'Error while registering referee';
+    try {
+      String id = Uuid().v1();
+      Referee referee = Referee(
+          id: id,
+          name: name,
+          mobile: mobile,
+          address: address,
+          interestedclubs: selectedClubs,
+          joinedClubs: []);
+      res = 'success';
+      await _firestore
+          .collection('refereeRequests')
+          .doc(id)
+          .set(referee.toJson());
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 }
