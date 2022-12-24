@@ -13,6 +13,7 @@ class RefereeRegScreen extends StatefulWidget {
 }
 
 class _RefereeRegScreenState extends State<RefereeRegScreen> {
+  bool isLoading = false;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   @override
@@ -25,6 +26,8 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
   final List<String> _selectedClubs = [];
   final List<String> _selectedClubsName = [];
   final List<Map<String, dynamic>> clubs = [];
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
@@ -46,6 +49,20 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
             height: 5,
           ),
           TextFormField1(
+            controller: _emailController,
+            hintText: 'Email',
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          TextFormField1(
+            controller: _passwordController,
+            hintText: 'Password',
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          TextFormField1(
             controller: _mobileController,
             hintText: 'Mobile',
           ),
@@ -62,59 +79,64 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
           InkWell(
             onTap: () {
               showDialog(
-                  context: context,
-                  builder: ((context) {
-                    return StatefulBuilder(
-                      builder: ((context, setState) {
-                        return AlertDialog(
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('cancel')),
-                            TextButton(
-                                onPressed: () {
-                                  refresh();
-                                  print(_selectedClubs);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('submit'))
-                          ],
-                          title: const Text('Select your interested Clubs'),
-                          content: SingleChildScrollView(
-                            child: ListBody(
-                              children: clubs
-                                  .map((club) => CheckboxListTile(
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      title: Text(club['name']),
-                                      value: _selectedClubs
-                                          .contains(club['id'].toString()),
-                                      onChanged: ((isChecked) {
-                                        setState(() {
-                                          if (isChecked!) {
-                                            _selectedClubs
-                                                .add(club['id'].toString());
-                                            _selectedClubsName
-                                                .add(club['name']);
-                                            print('added');
-                                          } else {
-                                            _selectedClubs
-                                                .remove(club['id'].toString());
-                                            _selectedClubsName
-                                                .remove(club['name']);
-                                            print('removed');
-                                          }
-                                        });
-                                      })))
-                                  .toList(),
-                            ),
+                context: context,
+                builder: ((context) {
+                  return StatefulBuilder(
+                    builder: ((context, setState) {
+                      return AlertDialog(
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('cancel')),
+                          TextButton(
+                            onPressed: () {
+                              refresh();
+                              print(_selectedClubs);
+                              Navigator.pop(context);
+                            },
+                            child: const Text('submit'),
+                          )
+                        ],
+                        title: const Text('Select your interested Clubs'),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: clubs
+                                .map(
+                                  (club) => CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    title: Text(club['name']),
+                                    value: _selectedClubs.contains(
+                                      club['id'].toString(),
+                                    ),
+                                    onChanged: ((isChecked) {
+                                      setState(() {
+                                        if (isChecked!) {
+                                          _selectedClubs
+                                              .add(club['id'].toString());
+                                          _selectedClubsName.add(club['name']);
+                                          print('added');
+                                        } else {
+                                          _selectedClubs
+                                              .remove(club['id'].toString());
+                                          _selectedClubsName
+                                              .remove(club['name']);
+                                          print('removed');
+                                        }
+                                      });
+                                    }),
+                                  ),
+                                )
+                                .toList(),
                           ),
-                        );
-                      }),
-                    );
-                  }));
+                        ),
+                      );
+                    }),
+                  );
+                }),
+              );
             },
             child: Container(
               decoration: const BoxDecoration(
@@ -123,14 +145,16 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
               height: 50,
               width: 250,
               child: const Card(
-                  child: Center(
-                      child: Text(
-                'Select Interested Clubs',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue),
-              ))),
+                child: Center(
+                  child: Text(
+                    'Select Interested Clubs',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue),
+                  ),
+                ),
+              ),
             ),
           ),
           Wrap(
@@ -147,15 +171,31 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
             onPressed: () async {
+              setState(() {
+                isLoading = true;
+              });
               print('reg');
               print(_selectedClubs);
               print(_selectedClubsName);
               String res = await registerReferee(
+                  email: _emailController.text,
+                  password: _passwordController.text,
                   name: _nameController.text,
                   address: _addressController.text,
                   mobile: _mobileController.text,
                   selectedClubs: _selectedClubs);
+              if (res == 'success') {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Colors.green, content: Text('Success')));
+                Navigator.pop(context);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(backgroundColor: Colors.red, content: Text(res)));
+              }
               print(res);
+              setState(() {
+                isLoading = false;
+              });
             },
             child: const Text('Register'),
           )
@@ -187,17 +227,21 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
 
   Future<String> registerReferee(
       {required String name,
+      required String email,
+      required String password,
       required String mobile,
       required String address,
       required List selectedClubs}) async {
-    _nameController.clear();
-    _addressController.clear();
-    _mobileController.clear();
     String res = 'Error while registering referee';
     try {
-      String id = Uuid().v1();
+      UserCredential cred = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
       Referee referee = Referee(
-          id: id,
+          role: 'Referee',
+          email: email,
+          password: password,
+          id: cred.user!.uid,
           name: name,
           mobile: mobile,
           address: address,
@@ -205,12 +249,17 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
           joinedClubs: []);
       res = 'success';
       await _firestore
-          .collection('refereeRequests')
-          .doc(id)
+          .collection('Referee')
+          .doc(cred.user!.uid)
           .set(referee.toJson());
     } catch (e) {
       res = e.toString();
     }
+    _nameController.clear();
+    _addressController.clear();
+    _mobileController.clear();
+    _emailController.clear();
+    _passwordController.clear();
     return res;
   }
 }

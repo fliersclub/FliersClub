@@ -67,7 +67,7 @@ class _UmpireApprovedState extends State<UmpireApproved> {
                   );
                 }));
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

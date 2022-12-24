@@ -48,7 +48,9 @@ class AuthMethod {
     try {
       UserCredential cred = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-
+      print(cred.user!.email);
+      print(cred.user!.uid);
+      print(role);
       DocumentSnapshot snap =
           await _firestore.collection(role).doc(cred.user!.uid).get();
       print('snap is' + snap.data().toString());

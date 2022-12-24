@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fliersclub/screens/Admin_Screens/admin_dashboard_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
+import 'package:fliersclub/screens/RefereeScreens/refereehome.dart';
 import 'package:fliersclub/services/auth_methods.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     'Please choose a User',
     'SuperAdmin',
     'ClubAdmin',
-    'Referees '
+    'Referee'
   ];
   @override
   Widget build(BuildContext context) {
@@ -110,12 +111,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     } else if (res == 'ClubAdmin') {
                       //Navigating to clubadmin panel
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) {
-                        return TournamentScreen1();
-                      }));
-                    } else if (res == 'Referees') {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return TournamentScreen1();
+                          },
+                        ),
+                      );
+                    } else if (res == 'Referee') {
                       //Navigating to referees panel
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return RefereeHome();
+                          },
+                        ),
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(res),

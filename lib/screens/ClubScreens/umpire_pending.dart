@@ -35,7 +35,7 @@ class _UmpirePendingState extends State<UmpirePending> {
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore
-            .collection('refereeRequests')
+            .collection('Referee')
             .where('interestedClubs', arrayContains: _auth.currentUser!.uid)
             .snapshots(),
         builder: (context, snapshot) {
@@ -70,6 +70,9 @@ class _UmpirePendingState extends State<UmpirePending> {
                             TextButton(
                               onPressed: () async {
                                 String res1 = await addReferee(
+                                  email: snapshot.data!.docs[index]['email'],
+                                  password: snapshot.data!.docs[index]
+                                      ['password'],
                                   id: snapshot.data!.docs[index]['id'],
                                   name: snapshot.data!.docs[index]['name'],
                                   address: snapshot.data!.docs[index]
@@ -91,10 +94,7 @@ class _UmpirePendingState extends State<UmpirePending> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {
-                                print(documentIds);
-                                getJoined();
-                              },
+                              onPressed: () {},
                               child: const Text(
                                 'Reject',
                                 style: TextStyle(color: Colors.red),
@@ -116,6 +116,8 @@ class _UmpirePendingState extends State<UmpirePending> {
   }
 
   Future<String> addReferee({
+    required String email,
+    required String password,
     required String id,
     required String name,
     required String mobile,
@@ -126,6 +128,9 @@ class _UmpirePendingState extends State<UmpirePending> {
     String res = 'Error while adding referee to club';
     try {
       Referee referee = Referee(
+          role: 'referee',
+          email: email,
+          password: password,
           id: id,
           name: name,
           mobile: mobile,
