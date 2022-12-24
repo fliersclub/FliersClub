@@ -51,10 +51,16 @@ class AuthMethod {
       print(cred.user!.email);
       print(cred.user!.uid);
       print(role);
-      DocumentSnapshot snap =
-          await _firestore.collection(role).doc(cred.user!.uid).get();
-      print('snap is' + snap.data().toString());
-      res = snap['role'];
+      if (role == 'Referee') {
+        DocumentSnapshot snap =
+            await _firestore.collection('Referee').doc(cred.user!.uid).get();
+        res = snap['role'];
+      } else {
+        DocumentSnapshot snap =
+            await _firestore.collection(role).doc(cred.user!.uid).get();
+        print('snap is' + snap.data().toString());
+        res = snap['role'];
+      }
     } catch (e) {
       res = e.toString();
     }
