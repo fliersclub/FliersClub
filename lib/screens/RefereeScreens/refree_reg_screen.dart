@@ -185,12 +185,20 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
                   mobile: _mobileController.text,
                   selectedClubs: _selectedClubs);
               if (res == 'success') {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.green, content: Text('Success')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.green,
+                    content: Text('Success'),
+                  ),
+                );
                 Navigator.pop(context);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(backgroundColor: Colors.red, content: Text(res)));
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(res),
+                  ),
+                );
               }
               print(res);
               setState(() {

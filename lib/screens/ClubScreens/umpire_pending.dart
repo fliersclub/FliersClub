@@ -153,8 +153,7 @@ class _UmpirePendingState extends State<UmpirePending> {
   Future<String> deleteRefereeRequest({required String id}) async {
     String res = 'Error while deleting request';
     try {
-      DocumentReference docRef =
-          _firestore.collection('refereeRequests').doc(id);
+      DocumentReference docRef = _firestore.collection('Referee').doc(id);
       docRef.update({
         'interestedClubs': FieldValue.arrayRemove([_auth.currentUser!.uid]),
         'joinedClubs': FieldValue.arrayUnion([_auth.currentUser!.uid])
