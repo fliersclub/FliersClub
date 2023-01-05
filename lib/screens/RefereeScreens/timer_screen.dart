@@ -1,14 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class TimerScreen extends StatefulWidget {
-  const TimerScreen({super.key});
+  var matchdata;
+  TimerScreen({this.matchdata});
 
   @override
   State<TimerScreen> createState() => _TimerScreenState();
 }
 
 class _TimerScreenState extends State<TimerScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.matchdata);
+  }
+
+  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+
   final StopWatchTimer _stopWatchTimer1 = StopWatchTimer();
   final StopWatchTimer _stopWatchTimer2 = StopWatchTimer();
   bool iscancelled1 = false;
@@ -18,6 +30,7 @@ class _TimerScreenState extends State<TimerScreen> {
   final _isHours = true;
   String pigeon1time = '';
   String pigeon2time = '';
+  String winnerPigeon = '';
   bool isStart = false;
   @override
   void dispose() {
@@ -222,7 +235,56 @@ class _TimerScreenState extends State<TimerScreen> {
                   },
                   child: const Text('START'),
                 )
-              : ElevatedButton(onPressed: () {}, child: const Text('End Match'))
+              : ElevatedButton(
+                  onPressed: () async {
+                    int result = pigeon1time.compareTo(pigeon2time);
+                    if (result < 0) {
+                      setState(() {
+                        winnerPigeon = 'pigeon2';
+                      });
+                      print('pigeon 2 is greater');
+                    } else if (result > 0) {
+                      setState(() {
+                        winnerPigeon = 'pigeon1';
+                      });
+                      print('pigeon 1 is greater');
+                    } else {
+                      setState(() {
+                        winnerPigeon = 'Equal';
+                      });
+                      print('pigeon 1 and pigeon 2 are equal time');
+                    }
+
+                    print(widget.matchdata['matchid']);
+                    await _firebaseFirestore
+                        .collection('ScoreBoard')
+                        .doc(widget.matchdata['matchid'])
+                        .set({
+                      'matchid': widget.matchdata['matchid'],
+                      'participantName': widget.matchdata['participantName'],
+                      'mobile': widget.matchdata['mobile'],
+                      'matchtime': widget.matchdata['matchtime'],
+                      'matchplace': widget.matchdata['matchplace'],
+                      'matchdate': widget.matchdata['matchdate'],
+                      'matchumpire': widget.matchdata['matchumpire'],
+                      'tournamentName': widget.matchdata['tournamentName'],
+                      'tournamentid': widget.matchdata['tournamentid'],
+                      'winnerPigeon': winnerPigeon,
+                      'pigeon1time': pigeon1time,
+                      'pigeon2time': pigeon2time
+                    });
+                    await _firebaseFirestore
+                        .collection('Referee')
+                        .doc(
+                          widget.matchdata['matchumpire'],
+                        )
+                        .collection('Matches')
+                        .doc(widget.matchdata['matchid'])
+                        .update({'matchend': true});
+
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('End Match'))
         ]),
       ),
     );

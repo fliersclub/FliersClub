@@ -156,6 +156,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                       label: const Text('Schedule Match'),
                       onPressed: () async {
                         String res = await addMatch(
+                            tournamentname: widget.tournament['tournamentName'],
                             tournamentid: widget.tournament['id'],
                             participantName: _matchNameController.text,
                             number: _mobileController.text,
@@ -227,6 +228,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
       {required String participantName,
       required String number,
       required tournamentid,
+      required tournamentname,
       required String date,
       required String time,
       required String place,
@@ -248,23 +250,25 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
         'matchtime': time,
         'matchplace': place,
         'matchumpire': umpire,
-        'tournamentid': tournamentid
+        'tournamentid': tournamentid,
+        'tournamentName': tournamentname,
       });
       await _firestore
           .collection('Referee')
           .doc(umpire)
-          .collection('Tournaments')
-          .doc(tournamentid)
           .collection('Matches')
           .doc(id)
           .set({
+        'matchid': id,
         'participantName': participantName,
+        'matchend': false,
         'mobile': number,
         'matchdate': date,
         'matchtime': time,
         'matchplace': place,
         'matchumpire': umpire,
-        'tournamentid': tournamentid
+        'tournamentid': tournamentid,
+        'tournamentName': tournamentname,
       });
       res = 'success';
     } catch (e) {
