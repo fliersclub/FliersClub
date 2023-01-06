@@ -25,8 +25,8 @@ class _RefereeHomeState extends State<RefereeHome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:
-            AppBar(backgroundColor: Colors.black, title: Text('Referee Home')),
+        appBar: AppBar(
+            backgroundColor: Colors.black, title: const Text('Referee Home')),
         body: StreamBuilder<QuerySnapshot>(
           stream: _firebaseFirestore
               .collection('Referee')

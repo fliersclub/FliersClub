@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ScoreBoard extends StatefulWidget {
   late String matchid;
@@ -15,7 +13,10 @@ class _ScoreBoardState extends State<ScoreBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('ScoreBoard')),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: const Text('ScoreBoard'),
+        ),
         body: StreamBuilder(
           stream: _firebaseFirestore
               .collection('ScoreBoard')
@@ -31,34 +32,42 @@ class _ScoreBoardState extends State<ScoreBoard> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(snapshot.data!.get('tournamentName')),
-                        SizedBox(
+                        Text(
+                          snapshot.data!.get('tournamentName'),
+                        ),
+                        const SizedBox(
                           height: 15,
                         ),
                         Text(snapshot.data!.get('participantName')),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text('winner pigeon is ' +
-                            snapshot.data!.get('winnerPigeon')),
-                        SizedBox(
+                        Text(
+                          'winner pigeon is ' +
+                              snapshot.data!.get('winnerPigeon'),
+                        ),
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text('Pigoen 1 time is  ' +
-                            snapshot.data!.get('pigeon1time')),
-                        SizedBox(
+                        Text(
+                          'Pigoen 1 time is  ' +
+                              snapshot.data!.get('pigeon1time'),
+                        ),
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text('Pigoen 2 time is ' +
-                            snapshot.data!.get('pigeon2time')),
-                        SizedBox(
+                        Text(
+                          'Pigoen 2 time is ' +
+                              snapshot.data!.get('pigeon2time'),
+                        ),
+                        const SizedBox(
                           height: 15,
                         ),
                       ]),
                 ),
               );
             } else {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }

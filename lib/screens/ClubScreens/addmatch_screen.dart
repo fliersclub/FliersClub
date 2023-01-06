@@ -244,10 +244,13 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
           .collection('matches')
           .doc(id)
           .set({
+        'mid': id,
         'participantName': participantName,
         'mobile': number,
         'matchdate': date,
+        'matchend': false,
         'matchtime': time,
+        'cid': _auth.currentUser!.uid,
         'matchplace': place,
         'matchumpire': umpire,
         'tournamentid': tournamentid,
@@ -263,6 +266,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
         'participantName': participantName,
         'matchend': false,
         'mobile': number,
+        'cid': _auth.currentUser!.uid,
         'matchdate': date,
         'matchtime': time,
         'matchplace': place,

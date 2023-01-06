@@ -31,6 +31,7 @@ class _TimerScreenState extends State<TimerScreen> {
   String pigeon1time = '';
   String pigeon2time = '';
   String winnerPigeon = '';
+  String winnertime = '';
   bool isStart = false;
   @override
   void dispose() {
@@ -241,21 +242,25 @@ class _TimerScreenState extends State<TimerScreen> {
                     if (result < 0) {
                       setState(() {
                         winnerPigeon = 'pigeon2';
+                        winnertime = pigeon2time;
                       });
                       print('pigeon 2 is greater');
                     } else if (result > 0) {
                       setState(() {
                         winnerPigeon = 'pigeon1';
+                        winnertime = pigeon1time;
                       });
                       print('pigeon 1 is greater');
                     } else {
                       setState(() {
                         winnerPigeon = 'Equal';
+                        winnertime = pigeon1time;
                       });
                       print('pigeon 1 and pigeon 2 are equal time');
                     }
 
                     print(widget.matchdata['matchid']);
+
                     await _firebaseFirestore
                         .collection('ScoreBoard')
                         .doc(widget.matchdata['matchid'])
@@ -271,7 +276,8 @@ class _TimerScreenState extends State<TimerScreen> {
                       'tournamentid': widget.matchdata['tournamentid'],
                       'winnerPigeon': winnerPigeon,
                       'pigeon1time': pigeon1time,
-                      'pigeon2time': pigeon2time
+                      'pigeon2time': pigeon2time,
+                      'winnertime': winnertime,
                     });
                     await _firebaseFirestore
                         .collection('Referee')
@@ -279,6 +285,14 @@ class _TimerScreenState extends State<TimerScreen> {
                           widget.matchdata['matchumpire'],
                         )
                         .collection('Matches')
+                        .doc(widget.matchdata['matchid'])
+                        .update({'matchend': true});
+                    await _firebaseFirestore
+                        .collection('ClubAdmin')
+                        .doc(widget.matchdata['cid'])
+                        .collection('tournaments')
+                        .doc(widget.matchdata['tournamentid'])
+                        .collection('matches')
                         .doc(widget.matchdata['matchid'])
                         .update({'matchend': true});
 

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fliersclub/screens/ClubScreens/addmatch_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/fixture_screen.dart';
+import 'package:fliersclub/screens/RefereeScreens/scoreboard.dart';
 import 'package:fliersclub/screens/RefereeScreens/timer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -132,28 +133,48 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                     ),
                                   ]),
                             ),
-                            snapshot.data!.docs[index]['matchdate'] == date1
+                            snapshot.data!.docs[index]['matchend'] == true
                                 ? Padding(
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             primary: Colors.green),
-                                        onPressed: () async {},
-                                        child: Text('Match Today at ' +
-                                            snapshot.data!.docs[index]
-                                                ['matchtime'])),
+                                        onPressed: () async {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: ((context) {
+                                            return ScoreBoard(
+                                                matchid: snapshot
+                                                    .data!.docs[index]['mid']);
+                                          })));
+                                        },
+                                        child: Text('View Score')),
                                   )
-                                : Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.green),
-                                      onPressed: () async {},
-                                      child: Text('Scheduled on ' +
-                                          snapshot.data!.docs[index]
-                                              ['matchdate']),
-                                    ),
-                                  )
+                                : snapshot.data!.docs[index]['matchdate'] ==
+                                        date1
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.green),
+                                            onPressed: () async {},
+                                            child: Text('Match Today at ' +
+                                                snapshot.data!.docs[index]
+                                                    ['matchtime'])),
+                                      )
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Colors.green),
+                                          onPressed: () async {},
+                                          child: Text('Scheduled on ' +
+                                              snapshot.data!.docs[index]
+                                                  ['matchdate']),
+                                        ),
+                                      )
                           ],
                         ),
                       ),
