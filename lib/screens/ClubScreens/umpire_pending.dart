@@ -94,7 +94,15 @@ class _UmpirePendingState extends State<UmpirePending> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await _firestore
+                                    .collection('Referee')
+                                    .doc(snapshot.data!.docs[index]['id'])
+                                    .update({
+                                  'interestedClubs': FieldValue.arrayRemove(
+                                      [_auth.currentUser!.uid])
+                                });
+                              },
                               child: const Text(
                                 'Reject',
                                 style: TextStyle(color: Colors.red),
