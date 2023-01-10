@@ -73,25 +73,44 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                 child: Text('No matches added for this tournament'),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15),
-                    width: double.infinity,
-                    child: Card(
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 87, 1, 136),
+                            Color.fromARGB(255, 172, 137, 204),
+                          ],
+                        ),
+                      ),
+                      width: double.infinity,
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Participant $index'),
+                            Text(
+                              'Participant $index',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
                                 'Name: ' +
                                     snapshot.data!.docs[index]
                                         ['participantName'],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -99,7 +118,10 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                               child: Text(
                                 'Mobile: ' +
                                     snapshot.data!.docs[index]['mobile'],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -107,7 +129,10 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                               child: Text(
                                 'Place: ' +
                                     snapshot.data!.docs[index]['matchplace'],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
                               ),
                             ),
                             Padding(
@@ -121,15 +146,19 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                       'Date: ' +
                                           snapshot.data!.docs[index]
                                               ['matchdate'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ),
                                     Text(
                                       'Time: ' +
                                           snapshot.data!.docs[index]
                                               ['matchtime'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ),
                                   ]),
                             ),
@@ -178,9 +207,12 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                           ],
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                ),
               );
             }
           },

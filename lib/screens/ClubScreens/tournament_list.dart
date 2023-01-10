@@ -35,17 +35,22 @@ class _TournamentListState extends State<TournamentList> {
               return Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: ((context, index) {
-                        return tournament(
-                            tournament: snapshot.data!.docs[index],
-                            context: context,
-                            tournamentname: snapshot.data!.docs[index]
-                                ['tournamentName'],
-                            status: snapshot.data!.docs[index]['status']);
-                      }),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.separated(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: ((context, index) {
+                          return tournament(
+                              tournament: snapshot.data!.docs[index],
+                              context: context,
+                              tournamentname: snapshot.data!.docs[index]
+                                  ['tournamentName'],
+                              status: snapshot.data!.docs[index]['status']);
+                        }),
+                        separatorBuilder: (context, index) {
+                          return const Divider();
+                        },
+                      ),
                     ),
                   ),
                   Container(
@@ -135,21 +140,32 @@ class _TournamentListState extends State<TournamentList> {
       required String status}) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-      child: Card(
-          child: Column(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 87, 1, 136),
+            Color.fromARGB(255, 172, 137, 204),
+          ],
+        ),
+      ),
+      child: Column(
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Tournament :' + tournamentname,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
             ),
           ),
           const Divider(),
           Text(
             'Status: ' + status,
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(
             height: 5,
@@ -169,7 +185,7 @@ class _TournamentListState extends State<TournamentList> {
             height: 5,
           ),
         ],
-      )),
+      ),
     );
   }
 }

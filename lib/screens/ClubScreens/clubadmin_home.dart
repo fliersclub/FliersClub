@@ -16,7 +16,7 @@ class ClubAdminHome extends StatefulWidget {
 class _ClubAdminHomeState extends State<ClubAdminHome> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return const DefaultTabController(
       length: 3,
       child: SafeArea(
         child: Scaffold(
