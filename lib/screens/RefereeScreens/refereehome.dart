@@ -52,7 +52,7 @@ class _RefereeHomeState extends State<RefereeHome> {
                             child: Center(
                               child: Text(
                                 snapshot.data!.docs[index]['tournamentName'],
-                                style: TextStyle(fontSize: 20),
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
                           ),

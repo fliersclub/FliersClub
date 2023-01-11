@@ -148,7 +148,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                                     .data!.docs[index]['mid']);
                                           })));
                                         },
-                                        child: Text('View Score')),
+                                        child: const Text('View Score')),
                                   )
                                 : snapshot.data!.docs[index]['matchdate'] ==
                                         date1

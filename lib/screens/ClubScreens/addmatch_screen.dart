@@ -24,6 +24,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
   String _date = DateFormat('dd-MM-yyyy').format(DateTime.now());
   String? selectedDate;
   late TimeOfDay time;
+  List rdates = [];
   String timeo = '';
   String _selectedUmpire = '';
   String _selectedUmpireName = '';
@@ -112,7 +113,8 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                     height: 50,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.lightBlueAccent),
-                        borderRadius: BorderRadius.all(Radius.circular(21))),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(21))),
                     width: double.infinity,
                     child: DropdownButtonHideUnderline(
                       child: Padding(
@@ -138,6 +140,8 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                               setState(() {
                                 _selectedUmpire = value!.id;
                                 _selectedUmpireName = value.name;
+                                rdates.clear();
+                                refereeCheck();
                               });
                             }),
                       ),
@@ -155,24 +159,57 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                       icon: const Icon(Icons.alarm),
                       label: const Text('Schedule Match'),
                       onPressed: () async {
-                        String res = await addMatch(
-                            tournamentname: widget.tournament['tournamentName'],
-                            tournamentid: widget.tournament['id'],
-                            participantName: _matchNameController.text,
-                            number: _mobileController.text,
-                            date: selectedDate.toString(),
-                            place: _matchPlaceController.text,
-                            time: timeo.toString(),
-                            umpire: _selectedUmpire.toString());
-                        if (res == 'success') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.green,
-                              content: Text('Match scheduled successfully')));
-                          Navigator.pop(context);
+                        refereeCheck();
+
+                        if (rdates.contains(selectedDate)) {
+                          showDialog(
+                              context: context,
+                              builder: ((context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Alert!!!',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  content: Text(
+                                      'Referee is not available in selected date ! please change match date or referee'),
+                                  actions: [
+                                    Center(
+                                      child: TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('OK')),
+                                    )
+                                  ],
+                                );
+                              }));
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(res.toString())));
+                          String res = await addMatch(
+                              tournamentname:
+                                  widget.tournament['tournamentName'],
+                              tournamentid: widget.tournament['id'],
+                              participantName: _matchNameController.text,
+                              number: _mobileController.text,
+                              date: selectedDate.toString(),
+                              place: _matchPlaceController.text,
+                              time: timeo.toString(),
+                              umpire: _selectedUmpire.toString());
+
+                          if (res == 'success') {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('Match scheduled successfully')));
+                            Navigator.pop(context);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  res.toString(),
+                                ),
+                              ),
+                            );
+                          }
                         }
 
                         print('Selected Umpire is ' + _selectedUmpire);
@@ -288,7 +325,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
     String res = 'Some error occured while registration';
 
     try {
-      CollectionReference ref = await _firestore
+      CollectionReference ref = _firestore
           .collection('ClubAdmin')
           .doc(_auth.currentUser!.uid)
           .collection('referees');
@@ -312,5 +349,20 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
       });
       print(e.toString());
     }
+  }
+
+  refereeCheck() async {
+    Stream<QuerySnapshot> snapshots = _firestore
+        .collection('Referee')
+        .doc(_selectedUmpire)
+        .collection('Matches')
+        .snapshots();
+    snapshots.listen((snapshot) {
+      for (var document in snapshot.docs) {
+        setState(() {
+          rdates.add(document.get('matchdate'));
+        });
+      }
+    });
   }
 }
