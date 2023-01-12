@@ -45,13 +45,6 @@ class _TournamentScreenState extends State<TournamentScreen2> {
             },
             child: const Icon(Icons.add)),
         appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  print('add pressed');
-                },
-                icon: const Icon(Icons.add))
-          ],
           title: Text(widget.tournament['tournamentName']),
           backgroundColor: Colors.black,
         ),
@@ -62,6 +55,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
               .collection('tournaments')
               .doc(widget.tournament['id'])
               .collection('matches')
+              .orderBy('matchdate')
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -84,7 +78,6 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Participant $index'),
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
@@ -124,12 +117,23 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text(
-                                      'Time: ' +
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'Referee: ' +
+                                              snapshot.data!.docs[index]
+                                                  ['umpname'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
                                           snapshot.data!.docs[index]
-                                              ['matchtime'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                              ['matchumpire'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 8),
+                                        ),
+                                      ],
                                     ),
                                   ]),
                             ),

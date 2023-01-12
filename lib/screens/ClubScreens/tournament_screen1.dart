@@ -15,6 +15,7 @@ class TournamentScreen1 extends StatefulWidget {
 }
 
 class _TournamentScreen1State extends State<TournamentScreen1> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,7 +31,7 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  _auth.signOut();
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: ((context) {
                     return LandingScreen();

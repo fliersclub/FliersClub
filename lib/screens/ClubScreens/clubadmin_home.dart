@@ -22,59 +22,36 @@ class _ClubAdminHomeState extends State<ClubAdminHome> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            actions: [
-              ElevatedButton(
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                  onPressed: () {
-                    _auth.signOut();
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      builder: (context) {
-                        return LandingScreen();
-                      },
-                    ), (route) => false);
-                  },
-                  child: Icon(
-                    Icons.logout,
-                  ))
-            ],
-            backgroundColor: Colors.black,
-            centerTitle: true,
-            title: Text('ClubAdmin'),
-          ),
-          body: Scaffold(
-            appBar: TabBar(tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.dashboard_rounded,
-                  color: Colors.teal,
-                ),
-                text: 'Dashboard',
+      child: Scaffold(
+        body: Scaffold(
+          appBar: TabBar(tabs: [
+            Tab(
+              icon: Icon(
+                Icons.dashboard_rounded,
+                color: Colors.teal,
               ),
-              Tab(
-                text: 'Approved',
-                icon: Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
+              text: 'Dashboard',
+            ),
+            Tab(
+              text: 'Approved',
+              icon: Icon(
+                Icons.check,
+                color: Colors.green,
               ),
-              Tab(
-                icon: Icon(
-                  Icons.pending_actions_outlined,
-                  color: Colors.red,
-                ),
-                text: 'Pending',
-              )
-            ]),
-            body: TabBarView(children: [
-              TournamentList(),
-              UmpireApproved(),
-              UmpirePending(),
-            ]),
-          ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.pending_actions_outlined,
+                color: Colors.red,
+              ),
+              text: 'Pending',
+            )
+          ]),
+          body: TabBarView(children: [
+            TournamentList(),
+            UmpireApproved(),
+            UmpirePending(),
+          ]),
         ),
       ),
     );

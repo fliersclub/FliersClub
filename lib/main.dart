@@ -6,6 +6,7 @@ import 'package:fliersclub/screens/Admin_Screens/adminhome_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/login_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/clubadmin_home.dart';
+import 'package:fliersclub/screens/ClubScreens/clubuser_homescreen.dart';
 import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
 import 'package:fliersclub/screens/RefereeScreens/refereehome.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
     print('role is' + role);
     if (role == 'ClubAdmin') {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
-        return ClubAdminHome();
+        return TournamentScreen1();
       })));
     } else if (role == 'Referee') {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {

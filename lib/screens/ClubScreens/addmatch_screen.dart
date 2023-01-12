@@ -185,6 +185,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                               }));
                         } else {
                           String res = await addMatch(
+                              umpname: _selectedUmpireName,
                               tournamentname:
                                   widget.tournament['tournamentName'],
                               tournamentid: widget.tournament['id'],
@@ -269,6 +270,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
       required String date,
       required String time,
       required String place,
+      required String umpname,
       required String umpire}) async {
     String res = 'Error while adding match';
     String id = Uuid().v1();
@@ -289,6 +291,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
         'matchtime': time,
         'cid': _auth.currentUser!.uid,
         'matchplace': place,
+        'umpname': umpname,
         'matchumpire': umpire,
         'tournamentid': tournamentid,
         'tournamentName': tournamentname,

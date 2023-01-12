@@ -40,7 +40,7 @@ class _RefereeHomeState extends State<RefereeHome> {
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   backgroundImage: isLoading == true
-                      ? AssetImage('assets/nouser.png') as ImageProvider
+                      ? const AssetImage('assets/nouser.png') as ImageProvider
                       : NetworkImage(referee['pic']),
                   radius: 75,
                 ),
@@ -59,13 +59,13 @@ class _RefereeHomeState extends State<RefereeHome> {
                 )
               ]),
             ),
-            ListTile(
+            const ListTile(
               title: Text('Profile Settings'),
             ),
             const Divider(
               color: Colors.white,
             ),
-            ListTile(
+            const ListTile(
               title: Text('Logout'),
             ),
           ]),
