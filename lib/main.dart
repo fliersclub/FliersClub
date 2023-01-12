@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fliersclub/screens/Admin_Screens/admin_dashboard_screen.dart';
+import 'package:fliersclub/screens/Admin_Screens/adminhome_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
+import 'package:fliersclub/screens/AuthScreen/login_screen.dart';
+import 'package:fliersclub/screens/ClubScreens/clubadmin_home.dart';
 import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
+import 'package:fliersclub/screens/RefereeScreens/refereehome.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -33,16 +37,47 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: LandingScreen());
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                checkUser(id: snapshot.data!.uid, context: context);
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return const LandingScreen();
+          },
+        ));
   }
 
-  // Future<String> roleCheck(String uid) async {
-  //   String role = 'error on role check';
-  //   try {
-  //     firestore.doc(uid).get().then((value) {
-  //       print(value.data()!['role'].toString());
-  //     });
-  //   } catch (e) {}
-  //   return role;
-  // }
+  checkUser({required id, required BuildContext context}) async {
+    DocumentSnapshot snapshot =
+        await firestore.collection('roles').doc(id).get();
+    String role = snapshot.get('role');
+    print('role is' + role);
+    if (role == 'ClubAdmin') {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
+        return ClubAdminHome();
+      })));
+    } else if (role == 'Referee') {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
+        return RefereeHome();
+      })));
+    } else if (role == 'SuperAdmin') {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
+        return AdminHome();
+      })));
+    } else {
+      print('invalid user');
+    }
+  }
 }

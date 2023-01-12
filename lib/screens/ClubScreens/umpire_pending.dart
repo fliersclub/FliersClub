@@ -70,6 +70,7 @@ class _UmpirePendingState extends State<UmpirePending> {
                             TextButton(
                               onPressed: () async {
                                 String res1 = await addReferee(
+                                  pic: snapshot.data!.docs[index]['pic'],
                                   email: snapshot.data!.docs[index]['email'],
                                   password: snapshot.data!.docs[index]
                                       ['password'],
@@ -124,6 +125,7 @@ class _UmpirePendingState extends State<UmpirePending> {
   }
 
   Future<String> addReferee({
+    required String pic,
     required String email,
     required String password,
     required String id,
@@ -136,6 +138,7 @@ class _UmpirePendingState extends State<UmpirePending> {
     String res = 'Error while adding referee to club';
     try {
       Referee referee = Referee(
+          pic: pic,
           role: 'referee',
           email: email,
           password: password,

@@ -25,12 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController = TextEditingController();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _selectedRole = 'Please choose a User';
-  List<String> _roles = [
-    'Please choose a User',
-    'SuperAdmin',
-    'ClubAdmin',
-    'Referee'
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,39 +39,39 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 200,
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            width: double.infinity,
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.lightBlueAccent),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(32),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                    elevation: 0,
-                    isExpanded: true,
-                    alignment: Alignment.center,
-                    value: _selectedRole,
-                    items: _roles.map((String role) {
-                      return DropdownMenuItem(
-                        value: role,
-                        child: Text(role),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedRole = value.toString();
-                        print('selected user is :' + value.toString());
-                      });
-                    }),
-              ),
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.symmetric(horizontal: 10),
+          //   width: double.infinity,
+          //   height: 50,
+          //   decoration: BoxDecoration(
+          //     border: Border.all(color: Colors.lightBlueAccent),
+          //     borderRadius: const BorderRadius.all(
+          //       Radius.circular(32),
+          //     ),
+          //   ),
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: 12),
+          //     child: DropdownButtonHideUnderline(
+          //       child: DropdownButton(
+          //           elevation: 0,
+          //           isExpanded: true,
+          //           alignment: Alignment.center,
+          //           value: _selectedRole,
+          //           items: _roles.map((String role) {
+          //             return DropdownMenuItem(
+          //               value: role,
+          //               child: Text(role),
+          //             );
+          //           }).toList(),
+          //           onChanged: (value) {
+          //             setState(() {
+          //               _selectedRole = value.toString();
+          //               print('selected user is :' + value.toString());
+          //             });
+          //           }),
+          //     ),
+          //   ),
+          // ),
           const SizedBox(
             height: 15,
           ),
@@ -98,9 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       isLoading = true;
                     });
                     String res = await AuthMethod().login(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        role: _selectedRole);
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
                     if (res == 'SuperAdmin') {
                       //Navigating to admin panel
                       Navigator.pushReplacement(
@@ -111,6 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     } else if (res == 'ClubAdmin') {
                       //Navigating to clubadmin panel
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

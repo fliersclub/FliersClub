@@ -48,7 +48,7 @@ class _LandingScreenState extends State<LandingScreen>
             ),
           ),
           const Text(
-            'Fliers\'s club',
+            'Flier\'s club',
             style: TextStyle(fontSize: 29),
           )
         ]),

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fliersclub/models/referee.dart';
+import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/RefereeScreens/scoreboard.dart';
 import 'package:fliersclub/screens/RefereeScreens/timer_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,19 +16,73 @@ class RefereeHome extends StatefulWidget {
 class _RefereeHomeState extends State<RefereeHome> {
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
-
+  bool? isLoading = false;
+  var referee;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUser();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.black, title: const Text('Referee Home')),
+        drawer: Drawer(
+          backgroundColor: Colors.grey,
+          child: Column(children: [
+            Container(
+              child: Column(children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: isLoading == true
+                      ? AssetImage('assets/nouser.png') as ImageProvider
+                      : NetworkImage(referee['pic']),
+                  radius: 75,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  referee['name'],
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Divider(
+                  color: Colors.white,
+                )
+              ]),
+            ),
+            ListTile(
+              title: Text('Profile Settings'),
+            ),
+            const Divider(
+              color: Colors.white,
+            ),
+            ListTile(
+              title: Text('Logout'),
+            ),
+          ]),
+        ),
+        appBar: AppBar(actions: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              onPressed: () {
+                _auth.signOut();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                  builder: (context) {
+                    return LandingScreen();
+                  },
+                ), (route) => false);
+              },
+              child: const Icon(Icons.logout))
+        ], backgroundColor: Colors.black, title: const Text('Referee Home')),
         body: StreamBuilder<QuerySnapshot>(
           stream: _firebaseFirestore
               .collection('Referee')
@@ -127,5 +183,15 @@ class _RefereeHomeState extends State<RefereeHome> {
         ),
       ),
     );
+  }
+
+  void getUser() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firebaseFirestore
+        .collection('Referee')
+        .doc(_auth.currentUser!.uid)
+        .get();
+    setState(() {
+      referee = snapshot.data();
+    });
   }
 }

@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fliersclub/models/referee.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class RefereeRegScreen extends StatefulWidget {
@@ -13,6 +17,9 @@ class RefereeRegScreen extends StatefulWidget {
 }
 
 class _RefereeRegScreenState extends State<RefereeRegScreen> {
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  Uint8List? File;
   bool isLoading = false;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,11 +33,12 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
   final List<String> _selectedClubs = [];
   final List<String> _selectedClubsName = [];
   final List<Map<String, dynamic>> clubs = [];
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _mobileController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +49,51 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const SizedBox(
+            height: 10,
+          ),
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 70,
+                backgroundImage: File == null
+                    ? const AssetImage('assets/nouser.png')
+                    : MemoryImage(File!) as ImageProvider,
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: const Text('Choose image from'),
+                              actions: [
+                                TextButton(
+                                  style: TextButton.styleFrom(),
+                                  onPressed: () {
+                                    selectImage(ImageSource.camera);
+                                  },
+                                  child: const Text('camera'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    selectImage(ImageSource.gallery);
+                                  },
+                                  child: const Text('Gallery'),
+                                ),
+                              ],
+                            ));
+                  },
+                  icon: const Icon(Icons.camera_alt),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           TextFormField1(
             controller: _nameController,
             hintText: 'Name',
@@ -178,6 +231,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
               print(_selectedClubs);
               print(_selectedClubsName);
               String res = await registerReferee(
+                  file: File,
                   email: _emailController.text,
                   password: _passwordController.text,
                   name: _nameController.text,
@@ -237,6 +291,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
       {required String name,
       required String email,
       required String password,
+      required file,
       required String mobile,
       required String address,
       required List selectedClubs}) async {
@@ -245,8 +300,15 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
       UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
+      String photoUrl = await uploadImageToStorage(
+          childName: 'RefereeprofilePics',
+          file: file,
+          isPost: false,
+          id: cred.user!.uid);
+
       Referee referee = Referee(
           role: 'Referee',
+          pic: photoUrl,
           email: email,
           password: password,
           id: cred.user!.uid,
@@ -260,6 +322,9 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
           .collection('Referee')
           .doc(cred.user!.uid)
           .set(referee.toJson());
+      await _firestore.collection('roles').doc(cred.user!.uid).set({
+        'role': 'Referee',
+      });
     } catch (e) {
       res = e.toString();
     }
@@ -269,5 +334,52 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
     _emailController.clear();
     _passwordController.clear();
     return res;
+  }
+
+  void selectImage(ImageSource source) async {
+    Uint8List im = await pickImage(source);
+    setState(() {
+      File = im;
+    });
+    Navigator.pop(context);
+  }
+
+  pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      return await _file.readAsBytes();
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('No image selected'),
+      ),
+    );
+    Navigator.pop(context);
+    print('No image selected');
+  }
+
+  Future<String> uploadImageToStorage(
+      {required String childName,
+      required Uint8List file,
+      required bool isPost,
+      required id}) async {
+    Reference ref = _firebaseStorage
+        .ref()
+        .child(childName)
+        .child(_firebaseAuth.currentUser!.uid);
+
+    if (isPost) {
+      String id = Uuid().v1();
+      ref = ref.child(id);
+    }
+
+    UploadTask uploadTask = ref.putData(file);
+
+    TaskSnapshot snap = await uploadTask;
+    String downloadUrl = await snap.ref.getDownloadURL();
+    return downloadUrl;
   }
 }

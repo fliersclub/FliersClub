@@ -33,6 +33,9 @@ class AuthMethod {
           .collection('ClubAdmin')
           .doc(cred.user!.uid)
           .set(clubUser.toJson());
+      await _firestore.collection('roles').doc(cred.user!.uid).set({
+        'role': 'ClubAdmin',
+      });
       res = 'success';
     } catch (e) {
       res = e.toString();
@@ -40,17 +43,19 @@ class AuthMethod {
     return res;
   }
 
-  Future<String> login(
-      {required String email,
-      required String password,
-      required String role}) async {
+  Future<String> login({
+    required String email,
+    required String password,
+  }) async {
     String res = 'Error while logging';
     try {
       UserCredential cred = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       print(cred.user!.email);
       print(cred.user!.uid);
-      print(role);
+      DocumentSnapshot snapshot =
+          await _firestore.collection('roles').doc(cred.user!.uid).get();
+      String role = snapshot.get('role');
       if (role == 'Referee') {
         DocumentSnapshot snap =
             await _firestore.collection('Referee').doc(cred.user!.uid).get();

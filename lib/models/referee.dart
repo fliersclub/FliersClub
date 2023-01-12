@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Referee {
+  String pic;
   String id;
   String email;
   String role;
@@ -13,6 +14,7 @@ class Referee {
 
   Referee(
       {required this.id,
+      required this.pic,
       required this.role,
       required this.email,
       required this.password,
@@ -25,6 +27,7 @@ class Referee {
   Map<String, dynamic> toJson() => {
         'id': id,
         'role': role,
+        'pic': pic,
         'name': name,
         'email': email,
         'password': password,
@@ -38,6 +41,7 @@ class Referee {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Referee(
+        pic: snapshot['pic'],
         role: snapshot['role'],
         password: snapshot['password'],
         email: snapshot['email'],
