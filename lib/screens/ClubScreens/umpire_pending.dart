@@ -20,14 +20,6 @@ class _UmpirePendingState extends State<UmpirePending> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(
-      Duration(seconds: 1),
-      () {
-        setState(() {
-          getJoined();
-        });
-      },
-    );
   }
 
   @override
@@ -44,7 +36,7 @@ class _UmpirePendingState extends State<UmpirePending> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: ((context, index) {
                 documentIds = snapshot.data!.docs[index]['joinedClubs'];
-                getJoined();
+
                 return Container(
                   decoration:
                       BoxDecoration(border: Border.all(color: Colors.black)),
@@ -58,12 +50,6 @@ class _UmpirePendingState extends State<UmpirePending> {
                         const SizedBox(
                           height: 5,
                         ),
-                        const Text(
-                          'JoinedClubs',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        for (int i = 0; i < joinedClubs.length; i++)
-                          Text(joinedClubs[i]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -186,18 +172,18 @@ class _UmpirePendingState extends State<UmpirePending> {
     return res;
   }
 
-  getJoined() async {
-    try {
-      CollectionReference collection = _firestore.collection('ClubAdmin');
-      documentIds.forEach((element) async {
-        QuerySnapshot snapshot =
-            await collection.where('id', isEqualTo: element).get();
-        setState(() {
-          joinedClubs.add(snapshot.docs[0]['clubName']);
-        });
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+  // getJoined() async {
+  //   try {
+  //     CollectionReference collection = _firestore.collection('ClubAdmin');
+  //     documentIds.forEach((element) async {
+  //       QuerySnapshot snapshot =
+  //           await collection.where('id', isEqualTo: element).get();
+  //       setState(() {
+  //         joinedClubs.add(snapshot.docs[0]['clubName']);
+  //       });
+  //     });
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 }

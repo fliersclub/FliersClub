@@ -20,7 +20,9 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-
+  String chance = '';
+  String _selectedItem = 'Chances';
+  List<String> items = ['Chances', 'Rain', 'Eagle Attack', 'NightOut'];
   final StopWatchTimer _stopWatchTimer1 = StopWatchTimer();
   final StopWatchTimer _stopWatchTimer2 = StopWatchTimer();
   bool iscancelled1 = false;
@@ -168,7 +170,7 @@ class _TimerScreenState extends State<TimerScreen> {
                             width: 1,
                           ),
                           iscancelled2 == true
-                              ? SizedBox()
+                              ? const SizedBox()
                               : isEnd2 == false
                                   ? Row(
                                       children: [
@@ -260,45 +262,67 @@ class _TimerScreenState extends State<TimerScreen> {
                     }
 
                     print(widget.matchdata['matchid']);
-
-                    await _firebaseFirestore
-                        .collection('ScoreBoard')
-                        .doc(widget.matchdata['matchid'])
-                        .set({
-                      'matchid': widget.matchdata['matchid'],
-                      'participantName': widget.matchdata['participantName'],
-                      'mobile': widget.matchdata['mobile'],
-                      'matchtime': widget.matchdata['matchtime'],
-                      'matchplace': widget.matchdata['matchplace'],
-                      'matchdate': widget.matchdata['matchdate'],
-                      'matchumpire': widget.matchdata['matchumpire'],
-                      'tournamentName': widget.matchdata['tournamentName'],
-                      'tournamentid': widget.matchdata['tournamentid'],
-                      'winnerPigeon': winnerPigeon,
-                      'pigeon1time': pigeon1time,
-                      'pigeon2time': pigeon2time,
-                      'winnertime': winnertime,
-                    });
-                    await _firebaseFirestore
-                        .collection('Referee')
-                        .doc(
-                          widget.matchdata['matchumpire'],
-                        )
-                        .collection('Matches')
-                        .doc(widget.matchdata['matchid'])
-                        .update({'matchend': true});
-                    await _firebaseFirestore
-                        .collection('ClubAdmin')
-                        .doc(widget.matchdata['cid'])
-                        .collection('tournaments')
-                        .doc(widget.matchdata['tournamentid'])
-                        .collection('matches')
-                        .doc(widget.matchdata['matchid'])
-                        .update({'matchend': true});
+                    try {
+                      await _firebaseFirestore
+                          .collection('ScoreBoard')
+                          .doc(widget.matchdata['matchid'])
+                          .set({
+                        'matchid': widget.matchdata['matchid'],
+                        'chance': chance,
+                        'participantName': widget.matchdata['participantName'],
+                        'mobile': widget.matchdata['mobile'],
+                        'matchtime': widget.matchdata['matchtime'],
+                        'matchplace': widget.matchdata['matchplace'],
+                        'matchdate': widget.matchdata['matchdate'],
+                        'matchumpire': widget.matchdata['matchumpire'],
+                        'tournamentName': widget.matchdata['tournamentName'],
+                        'tournamentid': widget.matchdata['tournamentid'],
+                        'winnerPigeon': winnerPigeon,
+                        'pigeon1time': pigeon1time,
+                        'pigeon2time': pigeon2time,
+                        'winnertime': winnertime,
+                      });
+                      await _firebaseFirestore
+                          .collection('Referee')
+                          .doc(
+                            widget.matchdata['matchumpire'],
+                          )
+                          .collection('Matches')
+                          .doc(widget.matchdata['matchid'])
+                          .update({'matchend': true, 'chance': chance});
+                      await _firebaseFirestore
+                          .collection('ClubAdmin')
+                          .doc(widget.matchdata['cid'])
+                          .collection('tournaments')
+                          .doc(widget.matchdata['tournamentid'])
+                          .collection('matches')
+                          .doc(widget.matchdata['matchid'])
+                          .update({'matchend': true, 'chance': chance});
+                    } catch (e) {
+                      print(e.toString());
+                    }
 
                     Navigator.of(context).pop();
                   },
-                  child: const Text('End Match'))
+                  child: const Text('End Match')),
+          Container(
+            height: 50,
+            child: DropdownButton<String>(
+              value: _selectedItem,
+              onChanged: (newVal) {
+                setState(() {
+                  _selectedItem = newVal!;
+                  chance = newVal;
+                });
+              },
+              items: items.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  child: Text(value),
+                  value: value,
+                );
+              }).toList(),
+            ),
+          )
         ]),
       ),
     );

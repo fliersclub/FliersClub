@@ -63,7 +63,7 @@ class _LandingScreenState extends State<LandingScreen>
               },
               color: Colors.black),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Row(

@@ -4,19 +4,25 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class TextFormField1 extends StatelessWidget {
   TextFormField1(
-      {this.hintText, this.ontap, this.controller, this.readonly, this.label});
+      {this.validator,
+      this.hintText,
+      this.ontap,
+      this.controller,
+      this.readonly,
+      this.label});
   String? hintText;
   Function()? ontap;
+  final String? Function(String?)? validator;
   TextEditingController? controller;
   bool? readonly;
   String? label;
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 50,
-        margin: EdgeInsets.symmetric(horizontal: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 12),
         width: double.infinity,
         child: TextFormField(
+          validator: validator,
           readOnly: readonly == null ? false : true,
           controller: controller,
           onTap: ontap,

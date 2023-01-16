@@ -25,121 +25,113 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController = TextEditingController();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _selectedRole = 'Please choose a User';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Hero(
-            tag: 'logo',
-            child: Container(
-              child: Image.asset('assets/whitefly.png'),
-              height: 200,
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Hero(
+              tag: 'logo',
+              child: Container(
+                child: Image.asset('assets/whitefly.png'),
+                height: 200,
+              ),
             ),
-          ),
-          // Container(
-          //   margin: EdgeInsets.symmetric(horizontal: 10),
-          //   width: double.infinity,
-          //   height: 50,
-          //   decoration: BoxDecoration(
-          //     border: Border.all(color: Colors.lightBlueAccent),
-          //     borderRadius: const BorderRadius.all(
-          //       Radius.circular(32),
-          //     ),
-          //   ),
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 12),
-          //     child: DropdownButtonHideUnderline(
-          //       child: DropdownButton(
-          //           elevation: 0,
-          //           isExpanded: true,
-          //           alignment: Alignment.center,
-          //           value: _selectedRole,
-          //           items: _roles.map((String role) {
-          //             return DropdownMenuItem(
-          //               value: role,
-          //               child: Text(role),
-          //             );
-          //           }).toList(),
-          //           onChanged: (value) {
-          //             setState(() {
-          //               _selectedRole = value.toString();
-          //               print('selected user is :' + value.toString());
-          //             });
-          //           }),
-          //     ),
-          //   ),
-          // ),
-          const SizedBox(
-            height: 15,
-          ),
-          TextFormField1(controller: _emailController, hintText: 'Email'),
-          const SizedBox(
-            height: 15,
-          ),
-          TextFormField1(controller: _passwordController, hintText: 'Password'),
-          const SizedBox(
-            height: 50,
-          ),
-          isLoading == true
-              ? Center(child: CircularProgressIndicator())
-              : WelcomeButton(
-                  text: 'Login',
-                  onPressed: () async {
-                    print(_selectedRole);
-                    setState(() {
-                      isLoading = true;
-                    });
-                    String res = await AuthMethod().login(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                    if (res == 'SuperAdmin') {
-                      //Navigating to admin panel
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return AdminDashboard();
-                        }),
-                      );
-                    } else if (res == 'ClubAdmin') {
-                      //Navigating to clubadmin panel
+            const SizedBox(
+              height: 15,
+            ),
+            TextFormField1(
+                controller: _emailController,
+                hintText: 'Email',
+                validator: ((value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter an email';
+                  } else if (!value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                })),
+            const SizedBox(
+              height: 15,
+            ),
+            TextFormField1(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter an password';
+                  } else if (value.length < 6) {
+                    return 'Password is too weak';
+                  }
+                  return null;
+                },
+                controller: _passwordController,
+                hintText: 'Password'),
+            const SizedBox(
+              height: 50,
+            ),
+            isLoading == true
+                ? Center(child: CircularProgressIndicator())
+                : WelcomeButton(
+                    text: 'Login',
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        String res = await AuthMethod().login(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                        if (res == 'SuperAdmin') {
+                          //Navigating to admin panel
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return AdminDashboard();
+                            }),
+                          );
+                        } else if (res == 'ClubAdmin') {
+                          //Navigating to clubadmin panel
 
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return TournamentScreen1();
-                          },
-                        ),
-                      );
-                    } else if (res == 'Referee') {
-                      //Navigating to referees panel
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return RefereeHome();
-                          },
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(res),
-                        backgroundColor: Colors.red,
-                      ));
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
-                  color: Colors.black)
-        ],
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return TournamentScreen1();
+                              },
+                            ),
+                          );
+                        } else if (res == 'Referee') {
+                          //Navigating to referees panel
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return RefereeHome();
+                              },
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(res),
+                            backgroundColor: Colors.red,
+                          ));
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
+                    color: Colors.black)
+          ],
+        ),
       ),
     );
   }

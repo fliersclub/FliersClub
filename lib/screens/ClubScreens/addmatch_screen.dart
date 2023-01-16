@@ -175,16 +175,18 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                                   actions: [
                                     Center(
                                       child: TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK')),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('OK'),
+                                      ),
                                     )
                                   ],
                                 );
                               }));
                         } else {
                           String res = await addMatch(
+                              chances: '',
                               umpname: _selectedUmpireName,
                               tournamentname:
                                   widget.tournament['tournamentName'],
@@ -264,6 +266,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
 
   Future<String> addMatch(
       {required String participantName,
+      required String chances,
       required String number,
       required tournamentid,
       required tournamentname,
@@ -286,6 +289,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
         'mid': id,
         'participantName': participantName,
         'mobile': number,
+        'chance': '',
         'matchdate': date,
         'matchend': false,
         'matchtime': time,
@@ -303,6 +307,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
           .doc(id)
           .set({
         'matchid': id,
+        'chance': '',
         'participantName': participantName,
         'matchend': false,
         'mobile': number,

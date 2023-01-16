@@ -104,7 +104,6 @@ class _RefereeHomeState extends State<RefereeHome> {
                         child: Column(children: [
                           Container(
                             width: double.infinity,
-                            color: Colors.amber[50],
                             child: Center(
                               child: Text(
                                 snapshot.data!.docs[index]['tournamentName'],
@@ -118,10 +117,19 @@ class _RefereeHomeState extends State<RefereeHome> {
                               'Mobile ' + snapshot.data!.docs[index]['mobile']),
                           Text('Date ' +
                               snapshot.data!.docs[index]['matchdate']),
-                          Text('matchtime ' +
-                              snapshot.data!.docs[index]['matchtime']),
                           Text('matchplace ' +
                               snapshot.data!.docs[index]['matchplace']),
+                          snapshot.data!.docs[index]['chance'] == ''
+                              ? SizedBox()
+                              : Container(
+                                  width: double.infinity,
+                                  color: Colors.lightBlueAccent,
+                                  child: Center(
+                                    child: Text(
+                                      snapshot.data!.docs[index]['chance'],
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  )),
                           snapshot.data!.docs[index]['matchend'] == false
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +175,10 @@ class _RefereeHomeState extends State<RefereeHome> {
                                         },
                                         child: const Text('View Score'))
                                   ],
-                                )
+                                ),
+                          Divider(
+                            color: Colors.black,
+                          )
                         ]),
                       ),
                     )
