@@ -279,7 +279,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
                       selectedClubs: _selectedClubs);
                   if (res == 'success') {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         backgroundColor: Colors.green,
                         content: Text('Success'),
                       ),
