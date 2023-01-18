@@ -29,7 +29,7 @@ class AuthMethod {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         String photoUrl = await uploadImageToStorage(
-            childName: 'RefereeprofilePics',
+            childName: 'Clublogo',
             file: file,
             isPost: false,
             id: cred.user!.uid);
