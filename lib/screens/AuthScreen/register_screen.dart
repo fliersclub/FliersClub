@@ -63,6 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 10,
                 ),
                 TextFormField1(
+                    type: TextInputType.emailAddress,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter an email';
@@ -91,6 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 15,
                 ),
                 TextFormField1(
+                    type: TextInputType.number,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Please enter an mobile number';

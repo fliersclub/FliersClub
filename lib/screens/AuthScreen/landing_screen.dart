@@ -3,8 +3,6 @@ import 'package:fliersclub/screens/AuthScreen/register_screen.dart';
 import 'package:fliersclub/screens/RefereeScreens/refree_reg_screen.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -17,6 +15,13 @@ class _LandingScreenState extends State<LandingScreen>
     with SingleTickerProviderStateMixin {
   Animation? animation;
   AnimationController? controller;
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    controller!.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {

@@ -24,7 +24,7 @@ class _ClubAdminHomeState extends State<ClubAdminHome> {
       length: 3,
       child: Scaffold(
         body: Scaffold(
-          appBar: TabBar(tabs: [
+          appBar: TabBar(labelColor: Colors.black, tabs: [
             Tab(
               icon: Icon(
                 Icons.dashboard_rounded,

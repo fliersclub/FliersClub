@@ -48,7 +48,7 @@ class _RefereeHomeState extends State<RefereeHome> {
                   height: 5,
                 ),
                 Text(
-                  referee['name'],
+                  isLoading == true ? 'loading...' : referee['name'],
                   style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(
@@ -197,12 +197,18 @@ class _RefereeHomeState extends State<RefereeHome> {
   }
 
   void getUser() async {
+    setState(() {
+      isLoading = true;
+    });
     DocumentSnapshot<Map<String, dynamic>> snapshot = await _firebaseFirestore
         .collection('Referee')
         .doc(_auth.currentUser!.uid)
         .get();
     setState(() {
       referee = snapshot.data();
+    });
+    setState(() {
+      isLoading = false;
     });
   }
 }

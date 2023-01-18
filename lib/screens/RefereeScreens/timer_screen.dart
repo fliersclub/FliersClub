@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
@@ -20,9 +19,9 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  String chance = '';
-  String _selectedItem = 'Chances';
-  List<String> items = ['Chances', 'Rain', 'Eagle Attack', 'NightOut'];
+
+  String _selectedchance = 'Rain';
+
   final StopWatchTimer _stopWatchTimer1 = StopWatchTimer();
   final StopWatchTimer _stopWatchTimer2 = StopWatchTimer();
   bool iscancelled1 = false;
@@ -112,7 +111,7 @@ class _TimerScreenState extends State<TimerScreen> {
                                                 isEnd1 = true;
                                               });
                                             },
-                                            child: Text('End'))
+                                            child: const Text('End'))
                                       ],
                                     )
                                   : const SizedBox(),
@@ -268,7 +267,7 @@ class _TimerScreenState extends State<TimerScreen> {
                           .doc(widget.matchdata['matchid'])
                           .set({
                         'matchid': widget.matchdata['matchid'],
-                        'chance': chance,
+                        'chance': '',
                         'participantName': widget.matchdata['participantName'],
                         'mobile': widget.matchdata['mobile'],
                         'matchtime': widget.matchdata['matchtime'],
@@ -289,7 +288,7 @@ class _TimerScreenState extends State<TimerScreen> {
                           )
                           .collection('Matches')
                           .doc(widget.matchdata['matchid'])
-                          .update({'matchend': true, 'chance': chance});
+                          .update({'matchend': true, 'chance': ''});
                       await _firebaseFirestore
                           .collection('ClubAdmin')
                           .doc(widget.matchdata['cid'])
@@ -297,7 +296,7 @@ class _TimerScreenState extends State<TimerScreen> {
                           .doc(widget.matchdata['tournamentid'])
                           .collection('matches')
                           .doc(widget.matchdata['matchid'])
-                          .update({'matchend': true, 'chance': chance});
+                          .update({'matchend': true, 'chance': ''});
                     } catch (e) {
                       print(e.toString());
                     }
@@ -305,24 +304,69 @@ class _TimerScreenState extends State<TimerScreen> {
                     Navigator.of(context).pop();
                   },
                   child: const Text('End Match')),
-          Container(
-            height: 50,
-            child: DropdownButton<String>(
-              value: _selectedItem,
-              onChanged: (newVal) {
-                setState(() {
-                  _selectedItem = newVal!;
-                  chance = newVal;
-                });
-              },
-              items: items.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  child: Text(value),
-                  value: value,
+          ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        return AlertDialog(
+                          title: const Text('Select a Reason'),
+                          content: Container(
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RadioListTile(
+                                      title: const Text('Rain'),
+                                      value: 'Rain',
+                                      groupValue: _selectedchance,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedchance = value.toString();
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      title: const Text('Falcon Attack'),
+                                      value: 'Falcon Attack',
+                                      groupValue: _selectedchance,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedchance = value.toString();
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      title: const Text('Night LightOut'),
+                                      value: 'Night LightOut',
+                                      groupValue: _selectedchance,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedchance = value.toString();
+                                        });
+                                      }),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red),
+                                    onPressed: () {
+                                      print(_selectedchance);
+                                    },
+                                    child: const Text(
+                                      'End',
+                                    ),
+                                  )
+                                ]),
+                          ),
+                        );
+                      },
+                    );
+                  },
                 );
-              }).toList(),
-            ),
-          )
+              },
+              child: const Text(
+                'Chances',
+              ))
+
+          //
         ]),
       ),
     );

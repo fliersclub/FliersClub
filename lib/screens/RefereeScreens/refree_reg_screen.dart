@@ -109,6 +109,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
               height: 5,
             ),
             TextFormField1(
+              type: TextInputType.emailAddress,
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter an email';
@@ -126,7 +127,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
             TextFormField1(
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please enter an email';
+                  return 'Please enter an password';
                 } else if (value.length < 6) {
                   return 'Password is weak';
                 }
@@ -139,9 +140,10 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
               height: 5,
             ),
             TextFormField1(
+              type: TextInputType.number,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please enter an email';
+                  return 'Please enter an number';
                 } else if (value.length > 10 || value.length < 10) {
                   return 'Please enter a valid number';
                 }

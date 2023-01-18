@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 class TextFormField1 extends StatelessWidget {
   TextFormField1(
       {this.validator,
+      this.type,
       this.hintText,
       this.ontap,
       this.controller,
@@ -14,6 +15,7 @@ class TextFormField1 extends StatelessWidget {
   Function()? ontap;
   final String? Function(String?)? validator;
   TextEditingController? controller;
+  TextInputType? type;
   bool? readonly;
   String? label;
   @override
@@ -22,6 +24,7 @@ class TextFormField1 extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 12),
         width: double.infinity,
         child: TextFormField(
+          keyboardType: type,
           validator: validator,
           readOnly: readonly == null ? false : true,
           controller: controller,

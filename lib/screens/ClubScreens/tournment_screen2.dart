@@ -145,12 +145,14 @@ class _TournamentScreenState extends State<TournamentScreen2> {
                                               snapshot.data!.docs[index]
                                                   ['umpname'],
                                           style: TextStyle(
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
                                           snapshot.data!.docs[index]
                                               ['matchumpire'],
                                           style: TextStyle(
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 8),
                                         ),
