@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fliersclub/models/referee.dart';
 import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/RefereeScreens/scoreboard.dart';
 import 'package:fliersclub/screens/RefereeScreens/timer_screen.dart';
@@ -144,15 +143,15 @@ class _RefereeHomeState extends State<RefereeHome> {
                                         height: 30,
                                         width: double.infinity,
                                         color: Colors.blue,
-                                        child: Center(
+                                        child: const Center(
                                           child: Text(
                                             'Completed',
-                                            style: const TextStyle(
-                                                color: Colors.white),
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         ),
                                       )
-                                    : SizedBox(),
+                                    : const SizedBox(),
                             snapshot.data!.docs[index]['chance'] == ''
                                 ? const SizedBox()
                                 : Container(
@@ -204,19 +203,23 @@ class _RefereeHomeState extends State<RefereeHome> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.blueGrey),
-                                          onPressed: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: ((context) {
-                                              return ScoreBoard(
-                                                matchid: snapshot.data!
-                                                    .docs[index]['matchid'],
-                                              );
-                                            })));
-                                          },
-                                          child: const Text('View Score')),
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blueGrey),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: ((context) {
+                                                return ScoreBoard(
+                                                  matchid: snapshot.data!
+                                                      .docs[index]['matchid'],
+                                                );
+                                              }),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text('View Score'),
+                                      ),
                                     ],
                                   ),
                           ]),

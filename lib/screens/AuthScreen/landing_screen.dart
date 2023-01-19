@@ -1,3 +1,4 @@
+import 'package:fliersclub/screens/AuthScreen/allregister_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/login_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/register_screen.dart';
 import 'package:fliersclub/screens/RefereeScreens/refree_reg_screen.dart';
@@ -71,39 +72,17 @@ class _LandingScreenState extends State<LandingScreen>
         const SizedBox(
           height: 5,
         ),
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: WelcomeButton(
-                    text: 'Club Register',
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const RegisterScreen();
-                      }));
-                    },
-                    color: Colors.black),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: WelcomeButton(
-                    text: 'Refree Register',
-                    onPressed: () {
-                      print('navigate to umpire reg page');
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: ((context) {
-                        return RefereeRegScreen();
-                      })));
-                    },
-                    color: Colors.black),
-              ),
-            ),
-          ],
-        )
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: WelcomeButton(
+              text: 'Register',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const AllRegisterScreen();
+                }));
+              },
+              color: Colors.black),
+        ),
       ]),
     );
   }

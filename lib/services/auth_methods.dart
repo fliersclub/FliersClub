@@ -59,6 +59,34 @@ class AuthMethod {
     return res;
   }
 
+  Future<String> userRegister(
+      {required String email,
+      required String name,
+      required String password,
+      required String mobile,
+      required String address}) async {
+    String res = 'Some error occured';
+    try {
+      UserCredential cred = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      await _firestore.collection('Users').doc(cred.user!.uid).set({
+        'email': email,
+        'name': name,
+        'password': password,
+        'mobile': mobile,
+        'address': address
+      });
+      await _firestore.collection('roles').doc(cred.user!.uid).set({
+        'role': 'User',
+      });
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   Future<String> login({
     required String email,
     required String password,
