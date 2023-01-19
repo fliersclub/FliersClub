@@ -89,6 +89,7 @@ class _RefereeHomeState extends State<RefereeHome> {
               .collection('Referee')
               .doc(_auth.currentUser!.uid)
               .collection('Matches')
+              .orderBy('matchdate', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -171,6 +172,8 @@ class _RefereeHomeState extends State<RefereeHome> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blueGrey),
                                         onPressed: () {
                                           Navigator.push(
                                             context,
@@ -190,6 +193,8 @@ class _RefereeHomeState extends State<RefereeHome> {
                                         width: 10,
                                       ),
                                       ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blueGrey),
                                         onPressed: () {},
                                         child: const Text('Reject'),
                                       ),

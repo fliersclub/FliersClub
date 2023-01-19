@@ -73,6 +73,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
                     height: 5,
                   ),
                   TextFormField1(
+                      type: TextInputType.number,
                       hintText: _mobileController.text.isEmpty
                           ? 'Mobile Number'
                           : _mobileController.text,

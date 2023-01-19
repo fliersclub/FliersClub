@@ -55,7 +55,7 @@ class _TournamentScreenState extends State<TournamentScreen2> {
               .collection('tournaments')
               .doc(widget.tournament['id'])
               .collection('matches')
-              .orderBy('matchdate')
+              .orderBy('matchdate', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
