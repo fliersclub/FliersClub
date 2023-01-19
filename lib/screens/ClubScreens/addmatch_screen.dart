@@ -292,6 +292,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
         'chance': '',
         'matchdate': date,
         'matchend': false,
+        'cancelled': false,
         'matchtime': time,
         'cid': _auth.currentUser!.uid,
         'matchplace': place,
@@ -308,6 +309,7 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
           .set({
         'matchid': id,
         'chance': '',
+        'cancelled': false,
         'participantName': participantName,
         'matchend': false,
         'mobile': number,

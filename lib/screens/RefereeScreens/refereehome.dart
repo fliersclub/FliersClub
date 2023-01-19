@@ -29,6 +29,7 @@ class _RefereeHomeState extends State<RefereeHome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.black,
         drawer: Drawer(
           backgroundColor: Colors.grey,
           child: Column(children: [
@@ -97,89 +98,124 @@ class _RefereeHomeState extends State<RefereeHome> {
                   return Column(children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Column(children: [
-                          Container(
-                            width: double.infinity,
-                            child: Center(
-                              child: Text(
-                                snapshot.data!.docs[index]['tournamentName'],
-                                style: const TextStyle(fontSize: 20),
+                          horizontal: 10, vertical: 5),
+                      child: Card(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                          ),
+                          child: Column(children: [
+                            Container(
+                              width: double.infinity,
+                              child: Center(
+                                child: Text(
+                                  snapshot.data!.docs[index]['tournamentName'],
+                                  style: const TextStyle(fontSize: 20),
+                                ),
                               ),
                             ),
-                          ),
-                          Text('Name ' +
-                              snapshot.data!.docs[index]['participantName']),
-                          Text(
-                              'Mobile ' + snapshot.data!.docs[index]['mobile']),
-                          Text('Date ' +
-                              snapshot.data!.docs[index]['matchdate']),
-                          Text('matchplace ' +
-                              snapshot.data!.docs[index]['matchplace']),
-                          snapshot.data!.docs[index]['chance'] == ''
-                              ? SizedBox()
-                              : Container(
-                                  width: double.infinity,
-                                  color: Colors.lightBlueAccent,
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data!.docs[index]['chance'],
-                                      style: TextStyle(color: Colors.black),
+                            Text('Name ' +
+                                snapshot.data!.docs[index]['participantName']),
+                            Text('Mobile ' +
+                                snapshot.data!.docs[index]['mobile']),
+                            Text('Date ' +
+                                snapshot.data!.docs[index]['matchdate']),
+                            Text('matchplace ' +
+                                snapshot.data!.docs[index]['matchplace']),
+                            snapshot.data!.docs[index]['cancelled'] == true
+                                ? Container(
+                                    height: 30,
+                                    width: double.infinity,
+                                    color: Colors.red,
+                                    child: Center(
+                                      child: Text(
+                                        'Cancelled',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
                                     ),
-                                  )),
-                          snapshot.data!.docs[index]['matchend'] == false
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: ((context) {
-                                              return TimerScreen(
-                                                matchdata:
-                                                    snapshot.data!.docs[index],
-                                              );
-                                            }),
+                                  )
+                                : snapshot.data!.docs[index]['matchend'] ==
+                                            true &&
+                                        snapshot.data!.docs[index]['chance'] ==
+                                            ''
+                                    ? Container(
+                                        height: 30,
+                                        width: double.infinity,
+                                        color: Colors.blue,
+                                        child: Center(
+                                          child: Text(
+                                            'Completed',
+                                            style: const TextStyle(
+                                                color: Colors.white),
                                           ),
-                                        );
-                                      },
-                                      child: const Text('View'),
+                                        ),
+                                      )
+                                    : SizedBox(),
+                            snapshot.data!.docs[index]['chance'] == ''
+                                ? const SizedBox()
+                                : Container(
+                                    height: 30,
+                                    width: double.infinity,
+                                    color: Colors.yellow,
+                                    child: Center(
+                                      child: Text(
+                                        snapshot.data!.docs[index]['chance'],
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      child: const Text('Reject'),
-                                    ),
-                                  ],
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
+                                  ),
+                            snapshot.data!.docs[index]['matchend'] == false
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
                                         onPressed: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) {
-                                            return ScoreBoard(
-                                              matchid: snapshot
-                                                  .data!.docs[index]['matchid'],
-                                            );
-                                          })));
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: ((context) {
+                                                return TimerScreen(
+                                                  matchdata: snapshot
+                                                      .data!.docs[index],
+                                                );
+                                              }),
+                                            ),
+                                          );
                                         },
-                                        child: const Text('View Score'))
-                                  ],
-                                ),
-                          Divider(
-                            color: Colors.black,
-                          )
-                        ]),
+                                        child: const Text('View'),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        child: const Text('Reject'),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blueGrey),
+                                          onPressed: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) {
+                                              return ScoreBoard(
+                                                matchid: snapshot.data!
+                                                    .docs[index]['matchid'],
+                                              );
+                                            })));
+                                          },
+                                          child: const Text('View Score')),
+                                    ],
+                                  ),
+                          ]),
+                        ),
                       ),
                     )
                   ]);

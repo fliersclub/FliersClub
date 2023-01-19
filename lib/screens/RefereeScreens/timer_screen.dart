@@ -20,7 +20,7 @@ class _TimerScreenState extends State<TimerScreen> {
 
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
-  String _selectedchance = 'Rain';
+  String _selectedchance = '';
 
   final StopWatchTimer _stopWatchTimer1 = StopWatchTimer();
   final StopWatchTimer _stopWatchTimer2 = StopWatchTimer();
@@ -38,11 +38,13 @@ class _TimerScreenState extends State<TimerScreen> {
   void dispose() {
     super.dispose();
     _stopWatchTimer1.dispose();
+    _stopWatchTimer2.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Pigeon Timer'),
@@ -81,33 +83,40 @@ class _TimerScreenState extends State<TimerScreen> {
                             width: 1,
                           ),
                           iscancelled1 == true
-                              ? SizedBox()
+                              ? const SizedBox()
                               : isEnd1 == false
                                   ? Row(
                                       children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              _stopWatchTimer1.onExecute
-                                                  .add(StopWatchExecute.stop);
-
-                                              setState(() {
-                                                pigeon1time = displayTime
-                                                    .substring(0, 16);
-
-                                                iscancelled1 = true;
-                                              });
-                                            },
-                                            child: Text('Cancel')),
+                                        iscancelled1 == true
+                                            ? const SizedBox()
+                                            : ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blueGrey),
+                                                onPressed: () {
+                                                  cancel();
+                                                  setState(() {
+                                                    pigeon1time = displayTime
+                                                        .substring(0, 16);
+                                                    pigeon2time = displayTime
+                                                        .substring(0, 16);
+                                                  });
+                                                },
+                                                child: const Text('Cancel')),
                                         const SizedBox(
                                           width: 4,
                                         ),
                                         ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.blueGrey),
                                             onPressed: () {
                                               _stopWatchTimer1.onExecute
                                                   .add(StopWatchExecute.stop);
                                               setState(() {
                                                 pigeon1time = displayTime
                                                     .substring(0, 16);
+
                                                 isEnd1 = true;
                                               });
                                             },
@@ -173,22 +182,28 @@ class _TimerScreenState extends State<TimerScreen> {
                               : isEnd2 == false
                                   ? Row(
                                       children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              _stopWatchTimer2.onExecute
-                                                  .add(StopWatchExecute.stop);
-                                              print(pigeon2time);
-                                              setState(() {
-                                                pigeon2time = displayTime
-                                                    .substring(0, 16);
-                                                iscancelled2 = true;
-                                              });
-                                            },
-                                            child: const Text('Cancel')),
+                                        iscancelled1 == true
+                                            ? SizedBox()
+                                            : ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blueGrey),
+                                                onPressed: () {
+                                                  cancel();
+                                                  setState(() {
+                                                    pigeon1time = displayTime
+                                                        .substring(0, 16);
+                                                    pigeon2time = displayTime
+                                                        .substring(0, 16);
+                                                  });
+                                                },
+                                                child: Text('Cancel')),
                                         const SizedBox(
                                           width: 5,
                                         ),
                                         ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blueGrey),
                                           onPressed: () {
                                             _stopWatchTimer2.onExecute
                                                 .add(StopWatchExecute.stop);
@@ -228,6 +243,8 @@ class _TimerScreenState extends State<TimerScreen> {
               }),
           isStart == false
               ? ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   onPressed: () {
                     setState(() {
                       isStart = true;
@@ -240,6 +257,7 @@ class _TimerScreenState extends State<TimerScreen> {
               : ElevatedButton(
                   onPressed: () async {
                     int result = pigeon1time.compareTo(pigeon2time);
+
                     if (result < 0) {
                       setState(() {
                         winnerPigeon = 'pigeon2';
@@ -261,50 +279,15 @@ class _TimerScreenState extends State<TimerScreen> {
                     }
 
                     print(widget.matchdata['matchid']);
-                    try {
-                      await _firebaseFirestore
-                          .collection('ScoreBoard')
-                          .doc(widget.matchdata['matchid'])
-                          .set({
-                        'matchid': widget.matchdata['matchid'],
-                        'chance': '',
-                        'participantName': widget.matchdata['participantName'],
-                        'mobile': widget.matchdata['mobile'],
-                        'matchtime': widget.matchdata['matchtime'],
-                        'matchplace': widget.matchdata['matchplace'],
-                        'matchdate': widget.matchdata['matchdate'],
-                        'matchumpire': widget.matchdata['matchumpire'],
-                        'tournamentName': widget.matchdata['tournamentName'],
-                        'tournamentid': widget.matchdata['tournamentid'],
-                        'winnerPigeon': winnerPigeon,
-                        'pigeon1time': pigeon1time,
-                        'pigeon2time': pigeon2time,
-                        'winnertime': winnertime,
-                      });
-                      await _firebaseFirestore
-                          .collection('Referee')
-                          .doc(
-                            widget.matchdata['matchumpire'],
-                          )
-                          .collection('Matches')
-                          .doc(widget.matchdata['matchid'])
-                          .update({'matchend': true, 'chance': ''});
-                      await _firebaseFirestore
-                          .collection('ClubAdmin')
-                          .doc(widget.matchdata['cid'])
-                          .collection('tournaments')
-                          .doc(widget.matchdata['tournamentid'])
-                          .collection('matches')
-                          .doc(widget.matchdata['matchid'])
-                          .update({'matchend': true, 'chance': ''});
-                    } catch (e) {
-                      print(e.toString());
-                    }
+
+                    endupdate(chance: _selectedchance);
 
                     Navigator.of(context).pop();
                   },
-                  child: const Text('End Match')),
+                  child: const Text('End Match'),
+                ),
           ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -313,49 +296,49 @@ class _TimerScreenState extends State<TimerScreen> {
                       builder: (context, setState) {
                         return AlertDialog(
                           title: const Text('Select a Reason'),
-                          content: Container(
-                            child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  RadioListTile(
-                                      title: const Text('Rain'),
-                                      value: 'Rain',
-                                      groupValue: _selectedchance,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedchance = value.toString();
-                                        });
-                                      }),
-                                  RadioListTile(
-                                      title: const Text('Falcon Attack'),
-                                      value: 'Falcon Attack',
-                                      groupValue: _selectedchance,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedchance = value.toString();
-                                        });
-                                      }),
-                                  RadioListTile(
-                                      title: const Text('Night LightOut'),
-                                      value: 'Night LightOut',
-                                      groupValue: _selectedchance,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedchance = value.toString();
-                                        });
-                                      }),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red),
-                                    onPressed: () {
-                                      print(_selectedchance);
-                                    },
-                                    child: const Text(
-                                      'End',
-                                    ),
-                                  )
-                                ]),
-                          ),
+                          content:
+                              Column(mainAxisSize: MainAxisSize.min, children: [
+                            RadioListTile(
+                                title: const Text('Rain'),
+                                value: 'Rain',
+                                groupValue: _selectedchance,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedchance = value.toString();
+                                  });
+                                }),
+                            RadioListTile(
+                                title: const Text('Falcon Attack'),
+                                value: 'Falcon Attack',
+                                groupValue: _selectedchance,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedchance = value.toString();
+                                  });
+                                }),
+                            RadioListTile(
+                                title: const Text('Night LightOut'),
+                                value: 'Night LightOut',
+                                groupValue: _selectedchance,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedchance = value.toString();
+                                  });
+                                }),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red),
+                              onPressed: () {
+                                print(_selectedchance);
+                                endupdate(chance: _selectedchance);
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                'End',
+                              ),
+                            )
+                          ]),
                         );
                       },
                     );
@@ -363,6 +346,7 @@ class _TimerScreenState extends State<TimerScreen> {
                 );
               },
               child: const Text(
+                style: TextStyle(color: Colors.black),
                 'Chances',
               ))
 
@@ -370,5 +354,61 @@ class _TimerScreenState extends State<TimerScreen> {
         ]),
       ),
     );
+  }
+
+  void endupdate({required String chance}) async {
+    try {
+      await _firebaseFirestore
+          .collection('ScoreBoard')
+          .doc(widget.matchdata['matchid'])
+          .set({
+        'matchid': widget.matchdata['matchid'],
+        'chance': chance,
+        'cancelled': iscancelled1,
+        'participantName': widget.matchdata['participantName'],
+        'mobile': widget.matchdata['mobile'],
+        'matchtime': widget.matchdata['matchtime'],
+        'matchplace': widget.matchdata['matchplace'],
+        'matchdate': widget.matchdata['matchdate'],
+        'matchumpire': widget.matchdata['matchumpire'],
+        'tournamentName': widget.matchdata['tournamentName'],
+        'tournamentid': widget.matchdata['tournamentid'],
+        'winnerPigeon': winnerPigeon,
+        'pigeon1time': pigeon1time,
+        'pigeon2time': pigeon2time,
+        'winnertime': winnertime,
+      });
+
+      await _firebaseFirestore
+          .collection('Referee')
+          .doc(
+            widget.matchdata['matchumpire'],
+          )
+          .collection('Matches')
+          .doc(widget.matchdata['matchid'])
+          .update(
+              {'matchend': true, 'chance': chance, 'cancelled': iscancelled1});
+
+      await _firebaseFirestore
+          .collection('ClubAdmin')
+          .doc(widget.matchdata['cid'])
+          .collection('tournaments')
+          .doc(widget.matchdata['tournamentid'])
+          .collection('matches')
+          .doc(widget.matchdata['matchid'])
+          .update(
+              {'matchend': true, 'chance': chance, 'cancelled': iscancelled1});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void cancel() {
+    _stopWatchTimer1.onExecute.add(StopWatchExecute.stop);
+    _stopWatchTimer2.onExecute.add(StopWatchExecute.stop);
+    setState(() {
+      iscancelled1 = true;
+      iscancelled2 = true;
+    });
   }
 }
