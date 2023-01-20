@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fliersclub/screens/Admin_Screens/admin_dashboard_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
 import 'package:fliersclub/screens/RefereeScreens/refereehome.dart';
+import 'package:fliersclub/screens/User_Screens/user_home.dart';
 import 'package:fliersclub/services/auth_methods.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
@@ -46,16 +47,17 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 15,
             ),
             TextFormField1(
-                controller: _emailController,
-                hintText: 'Email',
-                validator: ((value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter an email';
-                  } else if (!value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                })),
+              controller: _emailController,
+              hintText: 'Email',
+              validator: ((value) {
+                if (value!.isEmpty) {
+                  return 'Please enter an email';
+                } else if (!value.contains('@')) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              }),
+            ),
             const SizedBox(
               height: 15,
             ),
@@ -74,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 50,
             ),
             isLoading == true
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : WelcomeButton(
                     text: 'Login',
                     onPressed: () async {
@@ -112,6 +114,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialPageRoute(
                               builder: (context) {
                                 return RefereeHome();
+                              },
+                            ),
+                          );
+                        } else if (res == 'User') {
+                          //Navigating to referees panel
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return UserHome();
                               },
                             ),
                           );

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
+import 'package:fliersclub/screens/User_Screens/club_tournaments.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class UserHome extends StatefulWidget {
   const UserHome({super.key});
@@ -13,15 +13,26 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  FirebaseStorage _storage = FirebaseStorage.instance;
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.exit_to_app))
+            IconButton(
+              onPressed: () {
+                _auth.signOut();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                  builder: ((context) {
+                    return const LandingScreen();
+                  }),
+                ), (route) => false);
+              },
+              icon: const Icon(Icons.exit_to_app),
+            )
           ],
           backgroundColor: Colors.black,
           centerTitle: true,
@@ -39,15 +50,21 @@ class _UserHomeState extends State<UserHome> {
                       width: double.infinity,
                       height: 70,
                       child: Card(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      snapshot.data!.docs[index]['logo'])),
-                              Text(snapshot.data!.docs[index]['clubName'])
-                            ]),
-                      ),
+                          child: ListTile(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: ((context) {
+                            return ClubTournaments(
+                              tid: snapshot.data!.docs[index]['id'],
+                            );
+                          })));
+                        },
+                        leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                snapshot.data!.docs[index]['logo'])),
+                        title: Text(snapshot.data!.docs[index]['clubName']),
+                        subtitle: Text(snapshot.data!.docs[index]['address']),
+                      )),
                     ),
                   );
                 }));
@@ -56,7 +73,7 @@ class _UserHomeState extends State<UserHome> {
               child: Text('No Clubs Registered'),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },

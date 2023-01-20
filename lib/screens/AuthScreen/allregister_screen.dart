@@ -35,7 +35,7 @@ class AllRegisterScreen extends StatelessWidget {
               onPressed: () {
                 print('navigate to umpire reg page');
                 Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                  return RefereeRegScreen();
+                  return const RefereeRegScreen();
                 })));
               },
               color: Colors.black),

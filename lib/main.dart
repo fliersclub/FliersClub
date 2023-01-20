@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:fliersclub/screens/Admin_Screens/adminhome_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
-
 import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
 import 'package:fliersclub/screens/RefereeScreens/refereehome.dart';
+import 'package:fliersclub/screens/User_Screens/user_home.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           // This is the theme of your application.
-          //
           // Try running your application with "flutter run". You'll see the
           // application has a blue toolbar. Then, without quitting the app, try
           // changing the primarySwatch below to Colors.green and then invoke
@@ -74,6 +72,10 @@ class MyApp extends StatelessWidget {
     } else if (role == 'SuperAdmin') {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
         return AdminHome();
+      })));
+    } else if (role == 'User') {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
+        return UserHome();
       })));
     } else {
       print('invalid user');
