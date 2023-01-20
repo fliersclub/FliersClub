@@ -22,66 +22,73 @@ class _ClubTournamentState extends State<ClubTournaments> {
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: _firestore
-              .collection('ClubAdmin')
-              .doc(widget.tid)
-              .collection('tournaments')
-              .snapshots(),
-          builder: ((context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.data!.docs.isEmpty) {
-              return const Center(
-                child: Text(
-                  "No Tournament available.",
-                  style: TextStyle(color: Colors.white),
+        stream: _firestore
+            .collection('ClubAdmin')
+            .doc(widget.tid)
+            .collection('tournaments')
+            .snapshots(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "No Tournament available.",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: ((context, index) {
+              return Card(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Colors.blueGrey, Colors.white],
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(0.5, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp)),
+                  height: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        snapshot.data!.docs[index]['tournamentName'],
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) {
+                                  return UserMatch(
+                                    cid: snapshot.data!.docs[index]['clubid'],
+                                    tid: snapshot.data!.docs[index]['id'],
+                                  );
+                                }),
+                              ),
+                            );
+                          },
+                          child: const Text('View'))
+                    ],
+                  ),
                 ),
               );
-            }
-            return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: ((context, index) {
-                  return Card(
-                    child: Container(
-                        decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.blueGrey, Colors.white],
-                                begin: FractionalOffset(0.0, 0.0),
-                                end: FractionalOffset(0.5, 0.0),
-                                stops: [0.0, 1.0],
-                                tileMode: TileMode.clamp)),
-                        height: 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              snapshot.data!.docs[index]['tournamentName'],
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black),
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: ((context) {
-                                    return UserMatch(
-                                      cid: snapshot.data!.docs[index]['clubid'],
-                                      tid: snapshot.data!.docs[index]['id'],
-                                    );
-                                  })));
-                                },
-                                child: const Text('View'))
-                          ],
-                        )),
-                  );
-                }));
-          })),
+            }),
+          );
+        }),
+      ),
     );
   }
 }

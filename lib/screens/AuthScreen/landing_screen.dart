@@ -1,7 +1,9 @@
 import 'package:fliersclub/screens/AuthScreen/allregister_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/login_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/register_screen.dart';
+import 'package:fliersclub/screens/AuthScreen/score_home.dart';
 import 'package:fliersclub/screens/RefereeScreens/refree_reg_screen.dart';
+import 'package:fliersclub/screens/User_Screens/user_home.dart';
 import 'package:fliersclub/widgets/welcome_button.dart';
 import 'package:flutter/material.dart';
 
@@ -83,6 +85,23 @@ class _LandingScreenState extends State<LandingScreen>
               },
               color: Colors.black),
         ),
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                  builder: (context) {
+                    return ScoreHome();
+                  },
+                ), (route) => false);
+              },
+              child: const Text('ScoreBoard')),
+        )
       ]),
     );
   }

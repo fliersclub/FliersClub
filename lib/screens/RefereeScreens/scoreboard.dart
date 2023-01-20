@@ -9,10 +9,11 @@ class ScoreBoard extends StatefulWidget {
 }
 
 class _ScoreBoardState extends State<ScoreBoard> {
-  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('ScoreBoard'),
@@ -31,19 +32,75 @@ class _ScoreBoardState extends State<ScoreBoard> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        snapshot.data!.get('tournamentName'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60),
+                        child: Container(
+                            height: 50,
+                            width: double.infinity,
+                            color: Colors.black,
+                            child: Center(
+                              child: Text(
+                                snapshot.data!.get('tournamentName'),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )),
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(snapshot.data!.get('participantName')),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.date_range,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            snapshot.data!.get('matchdate') + ' , ',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const Icon(
+                            Icons.timer,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            snapshot.data!.get('matchtime'),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        snapshot.data!.get('participantName'),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
                       Text(
                         'winner pigeon is ' +
                             snapshot.data!.get('winnerPigeon'),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 15,
@@ -51,12 +108,20 @@ class _ScoreBoardState extends State<ScoreBoard> {
                       Text(
                         'Pigoen 1 time is  ' +
                             snapshot.data!.get('pigeon1time'),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       Text(
                         'Pigoen 2 time is ' + snapshot.data!.get('pigeon2time'),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 15,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fliersclub/screens/User_Screens/score_chart.dart';
 import 'package:flutter/material.dart';
 
 class UserMatch extends StatefulWidget {
@@ -44,7 +45,32 @@ class _UserMatchState extends State<UserMatch> {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    title: Text(snapshot.data!.docs[index]['participantName']),
+                    onTap: () {
+                      if (snapshot.data!.docs[index]['matchend'] == true) {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return ScoreChart(
+                              matchid: snapshot.data!.docs[index]['mid'],
+                            );
+                          },
+                        ));
+                      } else if (snapshot.data!.docs[index]['matchend'] ==
+                          false) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text('Match Not Completed')));
+                      }
+                    },
+                    title: Row(
+                      children: [
+                        const Icon(Icons.person),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(snapshot.data!.docs[index]['participantName']),
+                      ],
+                    ),
+                    subtitle: Row(children: []),
                   ),
                 );
               },

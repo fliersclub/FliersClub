@@ -101,128 +101,238 @@ class _RefereeHomeState extends State<RefereeHome> {
                           horizontal: 10, vertical: 5),
                       child: Card(
                         child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                          ),
-                          child: Column(children: [
-                            Container(
-                              width: double.infinity,
-                              child: Center(
-                                child: Text(
-                                  snapshot.data!.docs[index]['tournamentName'],
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            ),
-                            Text('Name ' +
-                                snapshot.data!.docs[index]['participantName']),
-                            Text('Mobile ' +
-                                snapshot.data!.docs[index]['mobile']),
-                            Text('Date ' +
-                                snapshot.data!.docs[index]['matchdate']),
-                            Text('matchplace ' +
-                                snapshot.data!.docs[index]['matchplace']),
-                            snapshot.data!.docs[index]['cancelled'] == true
-                                ? Container(
-                                    height: 30,
-                                    width: double.infinity,
-                                    color: Colors.red,
-                                    child: Center(
-                                      child: Text(
-                                        'Cancelled',
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [Colors.blueGrey, Colors.grey],
+                                  begin: FractionalOffset(0.0, 0.0),
+                                  end: FractionalOffset(0.5, 0.0),
+                                  stops: [0.0, 1.0],
+                                  tileMode: TileMode.clamp)),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration:
+                                      BoxDecoration(color: Colors.blueGrey),
+                                  width: double.infinity,
+                                  child: Center(
+                                    child: Text(
+                                      snapshot.data!.docs[index]
+                                          ['tournamentName'],
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  )
-                                : snapshot.data!.docs[index]['matchend'] ==
-                                            true &&
-                                        snapshot.data!.docs[index]['chance'] ==
-                                            ''
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  child: Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.person,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                snapshot.data!.docs[index]
+                                                    ['participantName'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.phone,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                snapshot.data!.docs[index]
+                                                    ['mobile'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.calendar_month,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                snapshot.data!.docs[index]
+                                                    ['matchdate'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.location_on,
+                                                color: Colors.white,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                snapshot.data!.docs[index]
+                                                    ['matchplace'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ]),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                snapshot.data!.docs[index]['cancelled'] == true
                                     ? Container(
                                         height: 30,
                                         width: double.infinity,
-                                        color: Colors.blue,
-                                        child: const Center(
+                                        color: Colors.red,
+                                        child: Center(
                                           child: Text(
-                                            'Completed',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            'Cancelled',
+                                            style: const TextStyle(
+                                                color: Colors.white),
                                           ),
                                         ),
                                       )
-                                    : const SizedBox(),
-                            snapshot.data!.docs[index]['chance'] == ''
-                                ? const SizedBox()
-                                : Container(
-                                    height: 30,
-                                    width: double.infinity,
-                                    color: Colors.yellow,
-                                    child: Center(
-                                      child: Text(
-                                        snapshot.data!.docs[index]['chance'],
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                            snapshot.data!.docs[index]['matchend'] == false
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blueGrey),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: ((context) {
-                                                return TimerScreen(
-                                                  matchdata: snapshot
-                                                      .data!.docs[index],
-                                                );
-                                              }),
+                                    : snapshot.data!.docs[index]['matchend'] ==
+                                                true &&
+                                            snapshot.data!.docs[index]
+                                                    ['chance'] ==
+                                                ''
+                                        ? Container(
+                                            height: 30,
+                                            width: double.infinity,
+                                            color: Colors.blue,
+                                            child: const Center(
+                                              child: Text(
+                                                'Completed',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
                                             ),
-                                          );
-                                        },
-                                        child: const Text('View'),
+                                          )
+                                        : const SizedBox(),
+                                snapshot.data!.docs[index]['chance'] == ''
+                                    ? const SizedBox()
+                                    : Container(
+                                        height: 30,
+                                        width: double.infinity,
+                                        color: Colors.yellow,
+                                        child: Center(
+                                          child: Text(
+                                            snapshot.data!.docs[index]
+                                                ['chance'],
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                        ),
                                       ),
-                                      const SizedBox(
-                                        width: 10,
+                                snapshot.data!.docs[index]['matchend'] == false
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.blueGrey),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: ((context) {
+                                                    return TimerScreen(
+                                                      matchdata: snapshot
+                                                          .data!.docs[index],
+                                                    );
+                                                  }),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text('View'),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.blueGrey),
+                                            onPressed: () {},
+                                            child: const Text('Reject'),
+                                          ),
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.blueGrey),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: ((context) {
+                                                    return ScoreBoard(
+                                                      matchid: snapshot
+                                                              .data!.docs[index]
+                                                          ['matchid'],
+                                                    );
+                                                  }),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text('View Score'),
+                                          ),
+                                        ],
                                       ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blueGrey),
-                                        onPressed: () {},
-                                        child: const Text('Reject'),
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blueGrey),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: ((context) {
-                                                return ScoreBoard(
-                                                  matchid: snapshot.data!
-                                                      .docs[index]['matchid'],
-                                                );
-                                              }),
-                                            ),
-                                          );
-                                        },
-                                        child: const Text('View Score'),
-                                      ),
-                                    ],
-                                  ),
-                          ]),
+                              ]),
                         ),
                       ),
                     )
