@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fliersclub/screens/Admin_Screens/admin_dashboard_screen.dart';
 import 'package:fliersclub/screens/Admin_Screens/adminhome_screen.dart';
 import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/tournament_screen1.dart';
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
       })));
     } else if (role == 'SuperAdmin') {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
-        return AdminHome();
+        return AdminDashboard();
       })));
     } else if (role == 'User') {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {

@@ -56,7 +56,7 @@ class _LandingScreenState extends State<LandingScreen>
             ),
           ),
           const Text(
-            'Flier\'s club',
+            'Fliers\' club',
             style: TextStyle(fontSize: 29),
           )
         ]),
@@ -94,11 +94,9 @@ class _LandingScreenState extends State<LandingScreen>
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                  builder: (context) {
-                    return ScoreHome();
-                  },
-                ), (route) => false);
+                Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                  return const ScoreHome();
+                })));
               },
               child: const Text('ScoreBoard')),
         )

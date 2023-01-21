@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fliersclub/screens/AuthScreen/landing_screen.dart';
 import 'package:fliersclub/screens/User_Screens/club_tournaments.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ScoreHome extends StatefulWidget {
   const ScoreHome({super.key});
