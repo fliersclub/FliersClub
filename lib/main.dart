@@ -75,9 +75,14 @@ class MyApp extends StatelessWidget {
         return AdminDashboard();
       })));
     } else if (role == 'User') {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
-        return UserHome();
-      })));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: ((context) {
+            return UserHome();
+          }),
+        ),
+      );
     } else {
       print('invalid user');
     }

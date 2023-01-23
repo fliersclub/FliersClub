@@ -21,10 +21,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _selectedRole = 'Please choose a User';
   final _formKey = GlobalKey<FormState>();
 
@@ -47,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 15,
             ),
             TextFormField1(
+              auto: [AutofillHints.email],
               controller: _emailController,
               hintText: 'Email',
               validator: ((value) {
@@ -90,15 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                         if (res == 'SuperAdmin') {
                           //Navigating to admin panel
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return AdminDashboard();
-                            }),
-                          );
+
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (context) {
+                            return AdminDashboard();
+                          }), (route) => false);
                         } else if (res == 'ClubAdmin') {
                           //Navigating to clubadmin panel
-
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

@@ -14,6 +14,7 @@ class AdminDashboard extends StatefulWidget {
 
 class _AdminDashboardState extends State<AdminDashboard> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   int _selectedIndex = 0;
   List _pages = [AdminHome(), SettingScreen(), AddScreen()];
   @override
@@ -47,12 +48,26 @@ class _AdminDashboardState extends State<AdminDashboard> {
             title:
                 Text('Settings', style: TextStyle(fontWeight: FontWeight.bold)),
           ),
-          Divider(),
-          ListTile(
+          const Divider(),
+          const ListTile(
             title: Text('ClubUser Management',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
-          Divider(),
+          const Divider(),
+          ListTile(
+            onTap: () {
+              _auth.signOut();
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return LandingScreen();
+                },
+              ));
+            },
+            title: const Text('Log Out',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+          ),
+          const Divider(),
         ],
       )),
       appBar: AppBar(

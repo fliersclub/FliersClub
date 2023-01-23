@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 InkWell(
@@ -154,11 +154,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   context: context,
                                   builder: ((context) {
                                     return AlertDialog(
-                                      title: Text(
+                                      title: const Text(
                                         'Success',
                                         style: TextStyle(color: Colors.green),
                                       ),
-                                      content: Text(
+                                      content: const Text(
                                           'Club request is forwarded to admin for approval'),
                                       actions: [
                                         Center(
@@ -173,11 +173,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     );
                                   }));
                             } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(res.toString()),
-                                backgroundColor: Colors.red,
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(res.toString()),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
                             }
 
                             setState(() {

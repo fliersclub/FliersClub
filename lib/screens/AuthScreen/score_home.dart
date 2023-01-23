@@ -23,9 +23,21 @@ class _ScoreHomeState extends State<ScoreHome> {
           centerTitle: true,
           title: const Text('Clubs')),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('ClubAdmin').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          stream: _firestore
+              .collection('ClubAdmin')
+              .where('isApproved', isEqualTo: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.data!.docs.isEmpty) {
+              return const Center(
+                  child: Text(
+                "No Clubs available.",
+                style: TextStyle(color: Colors.white),
+              ));
+            }
             return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: ((context, index) {
@@ -53,16 +65,7 @@ class _ScoreHomeState extends State<ScoreHome> {
                     ),
                   );
                 }));
-          } else if (!snapshot.hasData) {
-            return const Center(
-              child: Text('No Clubs Registered'),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+          }),
     );
   }
 }

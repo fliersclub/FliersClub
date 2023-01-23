@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fliersclub/widgets/dashboard_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -12,30 +13,72 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: [
-          Column(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            child: Expanded(
               child: Container(
                 width: double.infinity,
                 color: Colors.white12,
-                height: 400,
                 child: GridView.count(
                   crossAxisCount: 2,
                   children: [
-                    DashboardCard(title: 'No.of.clubs ', count: '0'),
-                    DashboardCard(title: 'No.of.Tournaments ', count: '0'),
-                    DashboardCard(title: 'No.of users ', count: '0'),
-                    DashboardCard(title: 'No.of.referees', count: '0'),
+                    StreamBuilder(
+                      stream: _firestore.collection('ClubAdmin').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return DashboardCard(
+                              title: 'No.of.clubs ',
+                              count: snapshot.data!.docs.length.toString());
+                        }
+                        return DashboardCard(title: 'No.of.clubs ', count: '0');
+                      },
+                    ),
+                    StreamBuilder(
+                      stream: _firestore.collection('Tournaments').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return DashboardCard(
+                              title: 'No.of.Tournaments ',
+                              count: snapshot.data!.docs.length.toString());
+                        }
+                        return DashboardCard(
+                            title: 'No.of.Tournments ', count: '0');
+                      },
+                    ),
+                    StreamBuilder(
+                      stream: _firestore.collection('Users').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return DashboardCard(
+                              title: 'No.of.users ',
+                              count: snapshot.data!.docs.length.toString());
+                        }
+                        return DashboardCard(title: 'No.of.users ', count: '0');
+                      },
+                    ),
+                    StreamBuilder(
+                      stream: _firestore.collection('Referee').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return DashboardCard(
+                              title: 'No.of.referees ',
+                              count: snapshot.data!.docs.length.toString());
+                        }
+                        return DashboardCard(
+                            title: 'No.of.referees ', count: '0');
+                      },
+                    ),
                   ],
                 ),
               ),
-            )
-          ]),
+            ),
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: const Text(

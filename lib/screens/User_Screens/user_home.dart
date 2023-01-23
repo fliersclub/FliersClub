@@ -21,24 +21,28 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                  builder: ((context) {
-                    return const LandingScreen();
-                  }),
-                ), (route) => false);
-              },
-              icon: const Icon(Icons.exit_to_app),
-            )
-          ],
-          backgroundColor: Colors.black,
-          centerTitle: true,
-          title: const Text('Home')),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                builder: ((context) {
+                  return const LandingScreen();
+                }),
+              ), (route) => false);
+            },
+            icon: const Icon(Icons.exit_to_app),
+          )
+        ],
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: const Text('Home'),
+      ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('ClubAdmin').snapshots(),
+        stream: _firestore
+            .collection('ClubAdmin')
+            .where('isApproved', isEqualTo: true)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(

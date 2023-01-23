@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fliersclub/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:uuid/uuid.dart';
 
 class AddTournamentScreen extends StatefulWidget {
@@ -16,9 +13,9 @@ class AddTournamentScreen extends StatefulWidget {
 
 class _AddTournamentScreenState extends State<AddTournamentScreen> {
   bool isLoading = false;
-  TextEditingController _tournamentController = TextEditingController();
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _tournamentController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +46,7 @@ class _AddTournamentScreenState extends State<AddTournamentScreen> {
                   setState(() {
                     isLoading = false;
                   });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       backgroundColor: Colors.green,
                       content: Text('Tournament added success')));
                   Navigator.pop(context);
@@ -65,14 +62,14 @@ class _AddTournamentScreenState extends State<AddTournamentScreen> {
                 setState(() {
                   isLoading = false;
                 });
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     backgroundColor: Colors.red,
                     content: Text('Enter tournament name to proceeed')));
               }
             },
             child: isLoading == true
-                ? Center(child: CircularProgressIndicator())
-                : Text('Add'))
+                ? const Center(child: CircularProgressIndicator())
+                : const Text('Add'))
       ]),
     );
   }
@@ -83,13 +80,22 @@ class _AddTournamentScreenState extends State<AddTournamentScreen> {
     required String status,
   }) async {
     String res = 'error while creating tournament';
-    var id = Uuid().v1();
+    var id = const Uuid().v1();
     try {
       await _firestore
           .collection('ClubAdmin')
           .doc(_auth.currentUser!.uid)
           .collection('tournaments')
           .doc(id)
+          .set({
+        'id': id,
+        'clubid': clubid,
+        'tournamentName': tournamentname,
+        'status': status
+      });
+      await _firestore
+          .collection('Tournaments')
+          .doc(_auth.currentUser!.uid)
           .set({
         'id': id,
         'clubid': clubid,

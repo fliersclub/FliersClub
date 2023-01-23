@@ -27,45 +27,41 @@ class _ApprovedScreenState extends State<ApprovedScreen> {
             return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: ((context, index) {
-                  return Expanded(
-                    child: Card(
-                      child: Container(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Name of the club :' +
-                                snapshot.data!.docs[index]['clubName'],
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text('Mobile :' +
-                              snapshot.data!.docs[index]['mobile']),
-                          Text('Address :' +
-                              snapshot.data!.docs[index]['address']),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red),
-                              onPressed: () async {
-                                String res = await deleteClub(
-                                    id: snapshot.data!.docs[index]['id'],
-                                    name: snapshot.data!.docs[index]
-                                        ['clubName']);
+                  return Card(
+                    child: Container(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Name of the club :' +
+                              snapshot.data!.docs[index]['clubName'],
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('Mobile :' + snapshot.data!.docs[index]['mobile']),
+                        Text('Address :' +
+                            snapshot.data!.docs[index]['address']),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            onPressed: () async {
+                              String res = await deleteClub(
+                                  id: snapshot.data!.docs[index]['id'],
+                                  name: snapshot.data!.docs[index]['clubName']);
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        backgroundColor: Colors.red,
-                                        content: Text(snapshot.data!.docs[index]
-                                                ['clubName'] +
-                                            ' Deleted successfully ')));
-                              },
-                              child: Text('Delete Club'))
-                        ],
-                      )),
-                    ),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text(snapshot.data!.docs[index]
+                                              ['clubName'] +
+                                          ' Deleted successfully ')));
+                            },
+                            child: Text('Delete Club'))
+                      ],
+                    )),
                   );
                 }));
           } else {
