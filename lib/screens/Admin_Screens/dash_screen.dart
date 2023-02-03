@@ -25,6 +25,7 @@ class _DashScreenState extends State<DashScreen> {
               child: Container(
                 width: double.infinity,
                 color: Colors.white12,
+                height: 400,
                 child: GridView.count(
                   crossAxisCount: 2,
                   children: [
@@ -95,7 +96,7 @@ class _DashScreenState extends State<DashScreen> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: []),
-                  margin: EdgeInsets.all(6.0),
+                  margin: const EdgeInsets.all(6.0),
                   decoration: BoxDecoration(
                     color: Colors.blue[50],
                     borderRadius: BorderRadius.circular(8.0),
@@ -113,31 +114,32 @@ class _DashScreenState extends State<DashScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: const Text(
               'Ongoing Tournaments',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
             ),
           ),
           Container(
               height: 100,
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Card(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       SizedBox(
                         height: 5,
                       ),
                     ]),
               )),
           Container(
-              height: 100,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Card(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center, children: []),
-              )),
+            height: 100,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Card(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center, children: []),
+            ),
+          ),
         ],
       ),
     );

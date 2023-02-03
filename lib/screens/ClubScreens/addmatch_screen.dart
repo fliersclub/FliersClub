@@ -230,8 +230,8 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
     DateTime? _datePicker = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2022),
-      lastDate: DateTime(2030),
+      firstDate: DateTime.now().subtract(Duration(days: 0)),
+      lastDate: DateTime(2100),
     );
 
     if (_datePicker != null && _datePicker != null) {
@@ -244,8 +244,10 @@ class _AddMatchScreenState extends State<AddMatchScreen> {
 
   void selectTime(BuildContext context) async {
     String AM_PM = '';
-    picked =
-        (await showTimePicker(context: context, initialTime: TimeOfDay.now()))!;
+    picked = (await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ))!;
 
     if (picked != null) {
       setState(() {

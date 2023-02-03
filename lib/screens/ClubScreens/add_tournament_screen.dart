@@ -93,10 +93,7 @@ class _AddTournamentScreenState extends State<AddTournamentScreen> {
         'tournamentName': tournamentname,
         'status': status
       });
-      await _firestore
-          .collection('Tournaments')
-          .doc(_auth.currentUser!.uid)
-          .set({
+      await _firestore.collection('Tournaments').doc(id).set({
         'id': id,
         'clubid': clubid,
         'tournamentName': tournamentname,

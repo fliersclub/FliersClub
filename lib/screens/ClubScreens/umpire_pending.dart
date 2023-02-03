@@ -38,8 +38,17 @@ class _UmpirePendingState extends State<UmpirePending> {
                 documentIds = snapshot.data!.docs[index]['joinedClubs'];
 
                 return Container(
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.black)),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [
+                          Colors.grey,
+                          Colors.lightBlueAccent,
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(0.5, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fliersclub/screens/ClubScreens/add_tournament_screen.dart';
 import 'package:fliersclub/screens/ClubScreens/tournment_screen2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class TournamentList extends StatefulWidget {
   const TournamentList({super.key});

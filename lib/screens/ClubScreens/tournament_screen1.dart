@@ -15,7 +15,7 @@ class TournamentScreen1 extends StatefulWidget {
 }
 
 class _TournamentScreen1State extends State<TournamentScreen1> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     // TODO: implement initState
@@ -25,7 +25,51 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              CircleAvatar(
+                radius: 70,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'ClubAdmin',
+                style: TextStyle(fontSize: 20),
+              ),
+              Divider(
+                color: Colors.black,
+                height: 5,
+              ),
+              ListTile(
+                title: Text('Profile'),
+              ),
+              Divider(
+                color: Colors.black,
+              ),
+              ListTile(
+                onTap: (() {
+                  _auth.signOut();
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: ((context) {
+                    return LandingScreen();
+                  })), (route) => false);
+                }),
+                title: Text(
+                  'Log Out',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              Divider(
+                color: Colors.black,
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: const Text('ClubAdmin'),
@@ -35,12 +79,12 @@ class _TournamentScreen1State extends State<TournamentScreen1> {
                   _auth.signOut();
                   Navigator.pushAndRemoveUntil(context,
                       MaterialPageRoute(builder: ((context) {
-                    return LandingScreen();
+                    return const LandingScreen();
                   })), (route) => false);
                 },
-                icon: Icon(Icons.exit_to_app))
+                icon: const Icon(Icons.exit_to_app))
           ],
         ),
-        body: ClubAdminHome());
+        body: const ClubAdminHome());
   }
 }

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:intl/intl.dart';
 
 class TimerScreen extends StatefulWidget {
   var matchdata;
@@ -15,13 +17,15 @@ class _TimerScreenState extends State<TimerScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     print(widget.matchdata);
   }
 
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-
+  String chanceTime = '';
+  String _selectedReason = '';
   String _selectedchance = '';
-
+  String formattedTime = '';
   final StopWatchTimer _stopWatchTimer1 = StopWatchTimer();
   final StopWatchTimer _stopWatchTimer2 = StopWatchTimer();
   bool scope = true;
@@ -35,6 +39,7 @@ class _TimerScreenState extends State<TimerScreen> {
   String winnerPigeon = '';
   String winnertime = '';
   bool isStart = false;
+  String displayTime = '';
   @override
   void dispose() {
     super.dispose();
@@ -45,7 +50,7 @@ class _TimerScreenState extends State<TimerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Pigeon Timer'),
@@ -59,97 +64,287 @@ class _TimerScreenState extends State<TimerScreen> {
                 initialData: _stopWatchTimer1.rawTime.value,
                 builder: (context, snapshot) {
                   final value = snapshot.data;
-                  final displayTime = StopWatchTimer.getDisplayTime(value!,
+                  displayTime = StopWatchTimer.getDisplayTime(value!,
                       hours: _isHours,
                       hoursRightBreak: 'hr ',
                       minuteRightBreak: 'min ',
                       secondRightBreak: 'sec ');
-                  return Container(
-                    height: 150,
-                    decoration: BoxDecoration(border: Border.all()),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Pigeon 1 : ',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        color: Colors.blue[50],
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Pigeon 1  ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      displayTime,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              displayTime,
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              width: 1,
-                            ),
-                            iscancelled1 == true
-                                ? const SizedBox()
-                                : isEnd1 == false
-                                    ? Row(
-                                        children: [
-                                          iscancelled1 == true
-                                              ? const SizedBox()
-                                              : ElevatedButton(
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              iscancelled1 == true
+                                  ? const SizedBox()
+                                  : isEnd1 == false
+                                      ? Row(
+                                          children: [
+                                            iscancelled1 == true
+                                                ? const SizedBox()
+                                                : SizedBox(
+                                                    width: 100,
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red),
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return StatefulBuilder(
+                                                              builder: ((context,
+                                                                  setState) {
+                                                                return AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                    'Reason for Cancel ?',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red),
+                                                                  ),
+                                                                  content: Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        RadioListTile(
+                                                                            title: const Text(
+                                                                                'Owner Cancel'),
+                                                                            value:
+                                                                                'Owner Cancel',
+                                                                            groupValue:
+                                                                                _selectedReason,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              setState(() {
+                                                                                _selectedReason = value.toString();
+                                                                              });
+                                                                            }),
+                                                                        RadioListTile(
+                                                                            title: const Text(
+                                                                                'Bird Missing / Time out'),
+                                                                            value:
+                                                                                'Bird Missing / Time out',
+                                                                            groupValue:
+                                                                                _selectedReason,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              setState(() {
+                                                                                _selectedReason = value.toString();
+                                                                              });
+                                                                            }),
+                                                                        RadioListTile(
+                                                                            title: const Text(
+                                                                                'Landed Out of Boundary'),
+                                                                            value:
+                                                                                'Landed Out of Boundary',
+                                                                            groupValue:
+                                                                                _selectedReason,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              setState(() {
+                                                                                _selectedReason = value.toString();
+                                                                              });
+                                                                            }),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            ElevatedButton(
+                                                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                                                                              onPressed: () {
+                                                                                cancel();
+                                                                                setState(() {
+                                                                                  pigeon1time = displayTime.substring(0, 16);
+                                                                                  pigeon2time = displayTime.substring(0, 16);
+                                                                                });
+                                                                              },
+                                                                              child: const Text('Cancel'),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              width: 15,
+                                                                            ),
+                                                                            ElevatedButton(
+                                                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: const Text('Close'),
+                                                                            ),
+                                                                          ],
+                                                                        )
+                                                                      ]),
+                                                                );
+                                                              }),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      child:
+                                                          const Text('Cancel'),
+                                                    ),
+                                                  ),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: ElevatedButton(
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                           backgroundColor:
-                                                              Colors.blueGrey),
+                                                              Colors.blue),
                                                   onPressed: () {
-                                                    cancel();
-                                                    setState(() {
-                                                      pigeon1time = displayTime
-                                                          .substring(0, 16);
-                                                      pigeon2time = displayTime
-                                                          .substring(0, 16);
-                                                    });
-                                                  },
-                                                  child: const Text('Cancel')),
-                                          const SizedBox(
-                                            width: 4,
-                                          ),
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Colors.blueGrey),
-                                              onPressed: () {
-                                                _stopWatchTimer1.onExecute
-                                                    .add(StopWatchExecute.stop);
-                                                setState(() {
-                                                  pigeon1time = displayTime
-                                                      .substring(0, 16);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                              'Alert !',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red),
+                                                            ),
+                                                            content: const Text(
+                                                              'Do you want to end match ?',
+                                                              style: TextStyle(
+                                                                  fontSize: 20),
+                                                            ),
+                                                            actions: [
+                                                              ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red),
+                                                                  onPressed:
+                                                                      () {
+                                                                    _stopWatchTimer1
+                                                                        .onExecute
+                                                                        .add(StopWatchExecute
+                                                                            .stop);
+                                                                    setState(
+                                                                        () {
+                                                                      pigeon1time =
+                                                                          displayTime.substring(
+                                                                              0,
+                                                                              16);
 
-                                                  isEnd1 = true;
-                                                });
-                                              },
-                                              child: const Text('End'))
-                                        ],
-                                      )
-                                    : const SizedBox(),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        iscancelled1 == true
-                            ? Text(
-                                'cancelled at ' + pigeon1time,
-                                style: TextStyle(color: Colors.red),
-                              )
-                            : SizedBox(),
-                        isEnd1 == true
-                            ? Text(
-                                'Match Ended ! Pigeon 1 time is ' + pigeon1time)
-                            : const SizedBox(),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                      ],
+                                                                      isEnd1 =
+                                                                          true;
+                                                                    });
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    'Yes',
+                                                                  )),
+                                                              ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .black),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                          'No'))
+                                                            ],
+                                                          );
+                                                        }));
+                                                  },
+                                                  child: const Text('End')),
+                                            )
+                                          ],
+                                        )
+                                      : const SizedBox(),
+                            ],
+                          ),
+                          iscancelled1 == true
+                              ? Text(
+                                  'cancelled at ' + pigeon1time,
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              : const SizedBox(),
+                          isEnd1 == true
+                              ? Text('Match Ended ! Pigeon 1 time is ' +
+                                  pigeon1time)
+                              : const SizedBox(),
+                          ElevatedButton.icon(
+                            label: const Text('Sighted'),
+                            icon: const Icon(Icons.remove_red_eye),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black),
+                            onPressed: () {
+                              String formattedTime =
+                                  DateFormat.jm().format(DateTime.now());
+                              _firebaseFirestore
+                                  .collection('LiveMatches')
+                                  .doc(widget.matchdata['matchid'])
+                                  .update({
+                                'pigeon1sightedAt':
+                                    FieldValue.arrayUnion([formattedTime])
+                              });
+                              print('click on sighted');
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }),
+            const SizedBox(
+              height: 10,
+            ),
             StreamBuilder<int>(
                 stream: _stopWatchTimer2.rawTime,
                 initialData: _stopWatchTimer2.rawTime.value,
@@ -160,108 +355,302 @@ class _TimerScreenState extends State<TimerScreen> {
                       hoursRightBreak: 'hr ',
                       minuteRightBreak: 'min ',
                       secondRightBreak: 'sec ');
-                  return Container(
-                    height: 150,
-                    decoration: BoxDecoration(border: Border.all()),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Pigeon 2 : ',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.blue[50],
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Pigeon 2  ',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      displayTime,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              displayTime,
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              width: 1,
-                            ),
-                            iscancelled2 == true
-                                ? const SizedBox()
-                                : isEnd2 == false
-                                    ? Row(
-                                        children: [
-                                          iscancelled1 == true
-                                              ? SizedBox()
-                                              : ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              Colors.blueGrey),
-                                                  onPressed: () {
-                                                    cancel();
-                                                    setState(() {
-                                                      pigeon1time = displayTime
-                                                          .substring(0, 16);
-                                                      pigeon2time = displayTime
-                                                          .substring(0, 16);
-                                                    });
-                                                  },
-                                                  child: Text('Cancel')),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.blueGrey),
-                                            onPressed: () {
-                                              _stopWatchTimer2.onExecute
-                                                  .add(StopWatchExecute.stop);
-                                              setState(() {
-                                                pigeon2time = displayTime
-                                                    .substring(0, 16);
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              iscancelled2 == true
+                                  ? const SizedBox()
+                                  : isEnd2 == false
+                                      ? Row(
+                                          children: [
+                                            iscancelled1 == true
+                                                ? const SizedBox()
+                                                : SizedBox(
+                                                    width: 100,
+                                                    child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                backgroundColor:
+                                                                    Colors.red),
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return StatefulBuilder(
+                                                                builder: ((context,
+                                                                    setState) {
+                                                                  return AlertDialog(
+                                                                    title:
+                                                                        const Text(
+                                                                      'Reason for Cancel ?',
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.red),
+                                                                    ),
+                                                                    content: Column(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        children: [
+                                                                          RadioListTile(
+                                                                              title: const Text('Owner Cancel'),
+                                                                              value: 'Owner Cancel',
+                                                                              groupValue: _selectedReason,
+                                                                              onChanged: (value) {
+                                                                                setState(() {
+                                                                                  _selectedReason = value.toString();
+                                                                                });
+                                                                              }),
+                                                                          RadioListTile(
+                                                                              title: const Text('Bird Missing / Time out'),
+                                                                              value: 'Bird Missing / Time out',
+                                                                              groupValue: _selectedReason,
+                                                                              onChanged: (value) {
+                                                                                setState(() {
+                                                                                  _selectedReason = value.toString();
+                                                                                });
+                                                                              }),
+                                                                          RadioListTile(
+                                                                              title: const Text('Landed Out of Boundary'),
+                                                                              value: 'Landed Out of Boundary',
+                                                                              groupValue: _selectedReason,
+                                                                              onChanged: (value) {
+                                                                                setState(() {
+                                                                                  _selectedReason = value.toString();
+                                                                                });
+                                                                              }),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            children: [
+                                                                              ElevatedButton(
+                                                                                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                                                                                onPressed: () {
+                                                                                  cancel();
+                                                                                  setState(() {
+                                                                                    pigeon1time = displayTime.substring(0, 16);
+                                                                                    pigeon2time = displayTime.substring(0, 16);
+                                                                                  });
+                                                                                },
+                                                                                child: const Text('Cancel'),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                width: 15,
+                                                                              ),
+                                                                              ElevatedButton(
+                                                                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                                                                onPressed: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: const Text('Close'),
+                                                                              ),
+                                                                            ],
+                                                                          )
+                                                                        ]),
+                                                                  );
+                                                                }),
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                        child: const Text(
+                                                            'Cancel')),
+                                                  ),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 100,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blue),
+                                                onPressed: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: ((context) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                            'Alert !',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          ),
+                                                          content: const Text(
+                                                            'Do you want to end match ?',
+                                                            style: TextStyle(
+                                                                fontSize: 20),
+                                                          ),
+                                                          actions: [
+                                                            ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .red),
+                                                                onPressed: () {
+                                                                  _stopWatchTimer2
+                                                                      .onExecute
+                                                                      .add(StopWatchExecute
+                                                                          .stop);
+                                                                  setState(
+                                                                    () {
+                                                                      pigeon2time =
+                                                                          displayTime.substring(
+                                                                              0,
+                                                                              16);
 
-                                                isEnd2 = true;
-                                              });
-                                            },
-                                            child: const Text('End'),
-                                          )
-                                        ],
-                                      )
-                                    : const SizedBox(),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        iscancelled2 == true
-                            ? Text(
-                                'Cancelled at ' + pigeon2time,
-                                style: TextStyle(color: Colors.red),
-                              )
-                            : const SizedBox(),
-                        isEnd2 == true
-                            ? Text(
-                                'Match Ended ! Pigeon 2 time is ' + pigeon2time)
-                            : const SizedBox(),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                      ],
+                                                                      isEnd2 =
+                                                                          true;
+                                                                    },
+                                                                  );
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  'Yes',
+                                                                )),
+                                                            ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .black),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        'No'))
+                                                          ],
+                                                        );
+                                                      }));
+                                                },
+                                                child: const Text('End'),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : const SizedBox(),
+                            ],
+                          ),
+                          iscancelled2 == true
+                              ? Text(
+                                  'Cancelled at ' + pigeon2time,
+                                  style: const TextStyle(color: Colors.red),
+                                )
+                              : const SizedBox(),
+                          isEnd2 == true
+                              ? Text('Match Ended ! Pigeon 2 time is ' +
+                                  pigeon2time)
+                              : const SizedBox(),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton.icon(
+                            label: const Text('Sighted'),
+                            icon: const Icon(Icons.remove_red_eye),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black),
+                            onPressed: () {
+                              String formattedTime =
+                                  DateFormat.jm().format(DateTime.now());
+                              _firebaseFirestore
+                                  .collection('LiveMatches')
+                                  .doc(widget.matchdata['matchid'])
+                                  .update({
+                                'Pigeon2sightedAt':
+                                    FieldValue.arrayUnion([formattedTime])
+                              });
+                              print('click on sighted');
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }),
+            const SizedBox(
+              height: 50,
+            ),
             isStart == false
-                ? ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () {
-                      setState(() {
-                        scope = false;
-                      });
-                      setState(() {
-                        isStart = true;
-                      });
-                      _stopWatchTimer1.onExecute.add(StopWatchExecute.start);
-                      _stopWatchTimer2.onExecute.add(StopWatchExecute.start);
-                    },
-                    child: const Text('START'),
+                ? SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green),
+                        onPressed: () {
+                          setState(() {
+                            scope = false;
+                          });
+                          setState(() {
+                            isStart = true;
+                          });
+                          _stopWatchTimer1.onExecute
+                              .add(StopWatchExecute.start);
+                          _stopWatchTimer2.onExecute
+                              .add(StopWatchExecute.start);
+                          String formattedTime =
+                              DateFormat.jm().format(DateTime.now());
+                          print(formattedTime);
+                          launchlive(matchstarttime: formattedTime);
+                        },
+                        child: const Text(
+                          'START',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ),
+                    ),
                   )
                 : ElevatedButton(
                     onPressed: () async {
@@ -288,77 +677,110 @@ class _TimerScreenState extends State<TimerScreen> {
                       }
 
                       print(widget.matchdata['matchid']);
-
-                      endupdate(chance: _selectedchance);
+                      try {
+                        await _firebaseFirestore
+                            .collection('LiveMatches')
+                            .doc(widget.matchdata['matchid'])
+                            .update({'isLive': false});
+                      } catch (e) {
+                        print(e.toString());
+                      }
+                      endupdate(
+                          chance: _selectedchance,
+                          cancelreason: _selectedReason);
 
                       Navigator.of(context).pop();
                     },
                     child: const Text('End Match'),
                   ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(
-                        builder: (context, setState) {
-                          return AlertDialog(
-                            title: const Text('Select a Reason'),
-                            content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  RadioListTile(
-                                      title: const Text('Rain'),
-                                      value: 'Rain',
-                                      groupValue: _selectedchance,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedchance = value.toString();
-                                        });
-                                      }),
-                                  RadioListTile(
-                                      title: const Text('Falcon Attack'),
-                                      value: 'Falcon Attack',
-                                      groupValue: _selectedchance,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedchance = value.toString();
-                                        });
-                                      }),
-                                  RadioListTile(
-                                      title: const Text('Night LightOut'),
-                                      value: 'Night LightOut',
-                                      groupValue: _selectedchance,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedchance = value.toString();
-                                        });
-                                      }),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red),
-                                    onPressed: () {
-                                      print(_selectedchance);
-                                      endupdate(chance: _selectedchance);
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text(
-                                      'End',
-                                    ),
-                                  )
-                                ]),
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return StatefulBuilder(
+                            builder: (context, setState) {
+                              return AlertDialog(
+                                title: const Text('Select a Reason'),
+                                content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      RadioListTile(
+                                          title: const Text('Rain'),
+                                          value: 'Rain',
+                                          groupValue: _selectedchance,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _selectedchance =
+                                                  value.toString();
+                                            });
+                                          }),
+                                      RadioListTile(
+                                          title: const Text('Falcon Attack'),
+                                          value: 'Falcon Attack',
+                                          groupValue: _selectedchance,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _selectedchance =
+                                                  value.toString();
+                                            });
+                                          }),
+                                      RadioListTile(
+                                          title: const Text('Night LightOut'),
+                                          value: 'Night LightOut',
+                                          groupValue: _selectedchance,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _selectedchance =
+                                                  value.toString();
+                                            });
+                                          }),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red),
+                                        onPressed: () async {
+                                          print(_selectedchance);
+                                          print(displayTime);
+                                          endupdate(
+                                              chancetime: displayTime,
+                                              chance: _selectedchance,
+                                              cancelreason: _selectedReason);
+
+                                          try {
+                                            await _firebaseFirestore
+                                                .collection('LiveMatches')
+                                                .doc(
+                                                    widget.matchdata['matchid'])
+                                                .update({'isLive': false});
+                                          } catch (e) {
+                                            print(e.toString());
+                                          }
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text(
+                                          'End',
+                                        ),
+                                      )
+                                    ]),
+                              );
+                            },
                           );
                         },
                       );
                     },
-                  );
-                },
-                child: const Text(
-                  style: TextStyle(color: Colors.black),
-                  'Chances',
-                ))
+                    child: const Text(
+                      style: TextStyle(color: Colors.black, fontSize: 19),
+                      'CHANCES',
+                    )),
+              ),
+            )
 
             //
           ]),
@@ -367,14 +789,19 @@ class _TimerScreenState extends State<TimerScreen> {
     );
   }
 
-  void endupdate({required String chance}) async {
+  void endupdate(
+      {required String chance,
+      required String cancelreason,
+      String? chancetime}) async {
     try {
       await _firebaseFirestore
           .collection('ScoreBoard')
           .doc(widget.matchdata['matchid'])
           .set({
+        'chanceTime': chancetime,
         'matchid': widget.matchdata['matchid'],
         'chance': chance,
+        'cancelreason': cancelreason,
         'cancelled': iscancelled1,
         'participantName': widget.matchdata['participantName'],
         'mobile': widget.matchdata['mobile'],
@@ -397,8 +824,13 @@ class _TimerScreenState extends State<TimerScreen> {
           )
           .collection('Matches')
           .doc(widget.matchdata['matchid'])
-          .update(
-              {'matchend': true, 'chance': chance, 'cancelled': iscancelled1});
+          .update({
+        'matchend': true,
+        'chance': chance,
+        'cancelled': iscancelled1,
+        'cancelreason': cancelreason,
+        'chanceTime': chancetime
+      });
 
       await _firebaseFirestore
           .collection('ClubAdmin')
@@ -407,8 +839,13 @@ class _TimerScreenState extends State<TimerScreen> {
           .doc(widget.matchdata['tournamentid'])
           .collection('matches')
           .doc(widget.matchdata['matchid'])
-          .update(
-              {'matchend': true, 'chance': chance, 'cancelled': iscancelled1});
+          .update({
+        'matchend': true,
+        'chance': chance,
+        'cancelreason': cancelreason,
+        'cancelled': iscancelled1,
+        'chanceTime': chancetime
+      });
     } catch (e) {
       print(e.toString());
     }
@@ -421,5 +858,20 @@ class _TimerScreenState extends State<TimerScreen> {
       iscancelled1 = true;
       iscancelled2 = true;
     });
+  }
+
+  void launchlive({required String matchstarttime}) async {
+    try {
+      await _firebaseFirestore
+          .collection('LiveMatches')
+          .doc(widget.matchdata['matchid'])
+          .set({
+        'matchstarttime': matchstarttime,
+        'matchendtime': '',
+        'isLive': true
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

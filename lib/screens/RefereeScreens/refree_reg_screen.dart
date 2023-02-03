@@ -26,7 +26,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    submit();
+    fetchClubs();
   }
 
   final List<String> _selectedClubs = [];
@@ -309,7 +309,7 @@ class _RefereeRegScreenState extends State<RefereeRegScreen> {
     );
   }
 
-  void submit() async {
+  void fetchClubs() async {
     String res = 'Some error occured while registration';
     try {
       CollectionReference clubcl = await _firestore.collection('ClubAdmin');

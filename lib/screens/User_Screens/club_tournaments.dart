@@ -45,12 +45,13 @@ class _ClubTournamentState extends State<ClubTournaments> {
               return Card(
                 child: Container(
                   decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.blueGrey, Colors.white],
-                          begin: FractionalOffset(0.0, 0.0),
-                          end: FractionalOffset(0.5, 0.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp)),
+                    gradient: LinearGradient(
+                        colors: [Colors.blueGrey, Colors.white],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(0.5, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
                   height: 100,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

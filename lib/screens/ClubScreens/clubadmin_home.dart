@@ -17,7 +17,7 @@ class ClubAdminHome extends StatefulWidget {
 }
 
 class _ClubAdminHomeState extends State<ClubAdminHome> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return const DefaultTabController(

@@ -19,17 +19,17 @@ class _ClubUserHomeScreenState extends State<ClubUserHomeScreen> {
     return Scaffold(
       body: pages[selectedIndex],
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 20, right: 5),
+        padding: const EdgeInsets.only(bottom: 20, right: 5),
         child: FloatingActionButton(
             backgroundColor: Colors.black,
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () {
               showDialog(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      content: Text('Do you want to add tournament ?'),
-                      title: Text('Alert!'),
+                      content: const Text('Do you want to add tournament ?'),
+                      title: const Text('Alert!'),
                       actions: [
                         TextButton(
                           onPressed: () {},

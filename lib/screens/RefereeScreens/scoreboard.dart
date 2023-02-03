@@ -33,7 +33,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 60),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Container(
                             height: 50,
                             width: double.infinity,
@@ -84,51 +84,84 @@ class _ScoreBoardState extends State<ScoreBoard> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(
-                        snapshot.data!.get('participantName'),
-                        style: const TextStyle(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.person,
                             color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            snapshot.data!.get('participantName'),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(
-                        'winner pigeon is ' +
-                            snapshot.data!.get('winnerPigeon'),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      snapshot.data!.get('cancelled') == false &&
+                              snapshot.data!.get('chance') == ''
+                          ? Column(
+                              children: [
+                                Text(
+                                  'Winner Pigeon is ' +
+                                      snapshot.data!.get('winnerPigeon'),
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )
+                          : snapshot.data!.get('cancelled') == true
+                              ? Text(
+                                  'Match Cancelled due to ' +
+                                      snapshot.data!.get('cancelreason'),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18),
+                                )
+                              : SizedBox(),
                       const SizedBox(
                         height: 15,
                       ),
-                      Text(
-                        'Pigoen 1 time is  ' +
-                            snapshot.data!.get('pigeon1time'),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'Pigoen 2 time is ' + snapshot.data!.get('pigeon2time'),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        snapshot.data!.get('chance'),
-                      ),
+                      snapshot.data!.get('chance') == ''
+                          ? Column(children: [
+                              Text(
+                                'Pigoen 1 time is  ' +
+                                    snapshot.data!.get('pigeon1time'),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                'Pigoen 2 time is ' +
+                                    snapshot.data!.get('pigeon2time'),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ])
+                          : Container(
+                              color: Colors.yellow,
+                              child: Text(
+                                'Chance Given due to ' +
+                                    snapshot.data!.get('chance') +
+                                    ' at ' +
+                                    snapshot.data!.get('chanceTime'),
+                                style: const TextStyle(fontSize: 16),
+                              )),
                       const SizedBox(
                         height: 15,
                       ),
